@@ -1,0 +1,85 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include <QtGui>
+
+namespace Ui {
+    class MainWindow;
+}
+
+class QAction;
+class QActionGroup;
+class QMenu;
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+    // parent wird standard maessig auf 0 gestetzt
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+
+    // rigth mouse click Menu ??
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
+
+private slots:
+    void on_pushButtonAbourt_clicked();
+    // FileMenu
+    void newContact();
+    //void importXML();
+    //void importExcel();
+    //void exportXML();
+    //void exportExcel();
+    //------------------
+    void exit();
+    // View
+    //void list();
+    //void detail();
+    //void singelView();
+    //void viewInGroup();
+    // Help
+    //void info();
+    void iGotTheFocus();
+
+private:
+    Ui::MainWindow *ui;
+    void createActions();
+    void createMenus();
+
+    // Menus
+    QMenu *fileMenu;
+    QMenu *viewMenu;
+    QMenu *helpMenu;
+
+    QMenu *contactImport;
+    QMenu *contactExport;
+    // Groups
+    //QActionGroup *contactImport;
+    //QActionGroup *contactExport;
+    // File Menu Actions
+    QAction *newContactAct;
+    QAction *importXMLAct;
+    QAction *importExcelAct;
+    QAction *exportXMLAct;
+    QAction *exportExcelAct;
+    QAction *exitAct;
+    // View Menu Actions
+    QAction *listAct;
+    QAction *detailAct;
+    QAction *singelViewAct;
+    QAction *viewInGroupAct;
+    // Help Menu Actions
+    QAction *infoAct;
+
+    // Mouse Actions
+    QAction *pasteAct;
+    QAction *cutAct;
+    QAction *copyAct;
+
+};
+
+
+#endif // MAINWINDOW_H
