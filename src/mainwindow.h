@@ -42,7 +42,9 @@ private slots:
     //void viewInGroup();
     // Help
     //void info();
-    void iGotTheFocus();
+    void iGotTheFocusPaste();
+    void iGotTheFocusCut();
+    void iGotTheFocusCopy();
 
 private:
     Ui::MainWindow *ui;
@@ -78,6 +80,10 @@ private:
     QAction *pasteAct;
     QAction *cutAct;
     QAction *copyAct;
+
+    // Buttons
+    QPushButton *buttonSave;
+    QPushButton *buttonAbort;
 
 };
 
