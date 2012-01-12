@@ -26,7 +26,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
 
 private slots:
-    void on_pushButtonAbourt_clicked();
     // FileMenu
     void newContact();
     //void importXML();
@@ -45,6 +44,9 @@ private slots:
     void iGotTheFocusPaste();
     void iGotTheFocusCut();
     void iGotTheFocusCopy();
+
+    // Buttons
+    void abortContact();
 
 private:
     Ui::MainWindow *ui;
@@ -85,6 +87,7 @@ private:
     QPushButton *buttonSave;
     QPushButton *buttonAbort;
 
+    QLineEdit *lines[15];
 };
 
 
