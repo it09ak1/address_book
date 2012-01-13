@@ -22,8 +22,8 @@ public:
     ~MainWindow();
 
     // rigth mouse click Menu ??
-protected:
-    void contextMenuEvent(QContextMenuEvent *event);
+//protected:
+    //void contextMenuEvent(QContextMenuEvent *event);
 
 private slots:
     // FileMenu
@@ -48,10 +48,14 @@ private slots:
     // Buttons
     void abortContact();
 
+    void showContextMenu();
+
 private:
     Ui::MainWindow *ui;
     void createActions();
     void createMenus();
+    void initLineEdit();
+    void rightMouseMenuNewContact();
 
     // Menus
     QMenu *fileMenu;
@@ -87,7 +91,7 @@ private:
     QPushButton *buttonSave;
     QPushButton *buttonAbort;
 
-    QLineEdit *lines[15];
+    QLineEdit *lines[25];
 };
 
 

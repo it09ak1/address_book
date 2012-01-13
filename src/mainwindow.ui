@@ -16,6 +16,9 @@
     <height>460</height>
    </size>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>Adress Buch</string>
   </property>
@@ -32,6 +35,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
       <property name="inputMethodHints">
        <set>Qt::ImhNone</set>
       </property>
@@ -43,6 +49,9 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::NoContextMenu</enum>
+         </property>
          <property name="text">
           <string>Neuer Kontakt:</string>
          </property>
@@ -50,8 +59,11 @@
        </item>
        <item>
         <widget class="QTabWidget" name="tabWidgetNeuerKontakr">
+         <property name="contextMenuPolicy">
+          <enum>Qt::NoContextMenu</enum>
+         </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tabPersoenlicheInfo">
           <attribute name="title">
@@ -85,7 +97,7 @@
             <item>
              <widget class="QLineEdit" name="WebsitePTlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -119,7 +131,7 @@
             <item>
              <widget class="QLineEdit" name="MobilFonePlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -153,7 +165,7 @@
             <item>
              <widget class="QLineEdit" name="TelefonPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -187,7 +199,7 @@
             <item>
              <widget class="QLineEdit" name="StreetPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -221,7 +233,7 @@
             <item>
              <widget class="QLineEdit" name="TownPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -255,7 +267,7 @@
             <item>
              <widget class="QLineEdit" name="EMailPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -289,7 +301,7 @@
             <item>
              <widget class="QLineEdit" name="LastNamePlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -323,7 +335,7 @@
             <item>
              <widget class="QLineEdit" name="FirstNamePlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -357,7 +369,7 @@
             <item>
              <widget class="QLineEdit" name="TitlePlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -388,7 +400,7 @@
             <item>
              <widget class="QLineEdit" name="BirthdayPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -425,7 +437,7 @@
                <bool>true</bool>
               </property>
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -456,7 +468,7 @@
             <item>
              <widget class="QLineEdit" name="ICQNumberPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -487,7 +499,7 @@
             <item>
              <widget class="QLineEdit" name="FAXPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -524,7 +536,7 @@
             <item>
              <widget class="QLineEdit" name="LandPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -555,7 +567,7 @@
             <item>
              <widget class="QLineEdit" name="PLZPlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -594,7 +606,7 @@
             <item>
              <widget class="QLineEdit" name="WebsiteSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -628,7 +640,7 @@
             <item>
              <widget class="QLineEdit" name="CompanySlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -662,7 +674,7 @@
             <item>
              <widget class="QLineEdit" name="PositionSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -696,7 +708,7 @@
             <item>
              <widget class="QLineEdit" name="StreatSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -730,7 +742,7 @@
             <item>
              <widget class="QLineEdit" name="TownSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -764,7 +776,7 @@
             <item>
              <widget class="QLineEdit" name="PLZSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -798,7 +810,7 @@
             <item>
              <widget class="QLineEdit" name="LandSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -832,7 +844,7 @@
             <item>
              <widget class="QLineEdit" name="TelephonSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -866,7 +878,7 @@
             <item>
              <widget class="QLineEdit" name="MobileSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -900,7 +912,7 @@
             <item>
              <widget class="QLineEdit" name="FAXSlineEdit">
               <property name="contextMenuPolicy">
-               <enum>Qt::NoContextMenu</enum>
+               <enum>Qt::CustomContextMenu</enum>
               </property>
              </widget>
             </item>
@@ -913,9 +925,9 @@
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QTextEdit" name="textEdit">
+            <widget class="QTextEdit" name="FeatureInfoTextEdit">
              <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
+              <enum>Qt::CustomContextMenu</enum>
              </property>
             </widget>
            </item>
@@ -930,6 +942,9 @@
            <width>380</width>
            <height>26</height>
           </size>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::NoContextMenu</enum>
          </property>
          <property name="standardButtons">
           <set>QDialogButtonBox::NoButton</set>
@@ -1043,7 +1058,7 @@
   <tabstop>FAXSlineEdit</tabstop>
   <tabstop>WebsiteSlineEdit</tabstop>
   <tabstop>tabWidgetNeuerKontakr</tabstop>
-  <tabstop>textEdit</tabstop>
+  <tabstop>FeatureInfoTextEdit</tabstop>
  </tabstops>
  <resources/>
  <connections/>

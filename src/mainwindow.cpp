@@ -7,11 +7,11 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->widgetNeuKontakt->hide();
+    ui->widgetNeuKontakt->close();
 
     buttonSave = new QPushButton("Speichern");
     buttonAbort = new QPushButton("Abbrenchen");
-    connect(buttonAbort, SIGNAL(clicked()), ui->widgetNeuKontakt, SLOT(close()));
+    connect(buttonAbort, SIGNAL(clicked()), this, SLOT(abortContact()));
 
     ui->buttonBox->addButton(buttonSave, QDialogButtonBox::ActionRole);
     ui->buttonBox->addButton(buttonAbort, QDialogButtonBox::ActionRole);
@@ -23,7 +23,32 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     createActions();
     createMenus();
+    initLineEdit();
+    rightMouseMenuNewContact();
+}
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+// In Qt own writen functions /////////////////////////
+///////////////////////////////////////////////////////
+// right Mouse event //////////////////////////////////
+void MainWindow::showContextMenu()
+{
+    QMenu *menu2 = new QMenu(this);
+    menu2->addAction(pasteAct);
+    menu2->addSeparator();
+    menu2->addAction(cutAct);
+    menu2->addAction(copyAct);
+    menu2->exec(QCursor::pos());
+}
+
+void MainWindow::initLineEdit()
+{
+    // personal data /////////////////////////////////
+    //////////////////////////////////////////////////
     lines[0] = ui->TitlePlineEdit;
     lines[1] = ui->FirstNamePlineEdit;
     lines[2] = ui->LastNamePlineEdit;
@@ -39,6 +64,33 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     lines[12] = ui->ICQNumberPlineEdit;
     lines[13] = ui->SkypPlineEdit;
     lines[14] = ui->BirthdayPlineEdit;
+    // personal data /////////////////////////////////
+    //////////////////////////////////////////////////
+
+    // Costumer Data /////////////////////////////////
+    //////////////////////////////////////////////////
+    lines[15] = ui->CompanySlineEdit;
+    lines[16] = ui->PositionSlineEdit;
+    lines[17] = ui->StreatSlineEdit;
+    lines[18] = ui->PLZSlineEdit;
+    lines[19] = ui->TownSlineEdit;
+    lines[20] = ui->LandSlineEdit;
+    lines[21] = ui->TelephonSlineEdit;
+    lines[22] = ui->FAXSlineEdit;
+    lines[23] = ui->MobileSlineEdit;
+    lines[24] = ui->WebsiteSlineEdit;
+    // Costumer Data /////////////////////////////////
+    //////////////////////////////////////////////////
+}
+
+void MainWindow::rightMouseMenuNewContact()
+{
+    for (int i = 0; i < 25; i++)
+    {
+        connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this ,SLOT(showContextMenu()));
+    }
+
+    connect(ui->FeatureInfoTextEdit, SIGNAL(customContextMenuRequested(QPoint)), this ,SLOT(showContextMenu()));
 }
 
 void MainWindow::createActions()
@@ -116,16 +168,18 @@ void MainWindow::createMenus()
     helpMenu->addAction(infoAct);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-// QActions /////////////////////////////////
-
+// QActions ////////////////////////////////////
+////////////////////////////////////////////////
 void MainWindow::abortContact()
 {
     ui->widgetNeuKontakt->close();
+    //delete ui->widgetNeuKontakt;
+    for (int i = 0; i < 25; i++)
+    {
+        //qDebug() << lines[i]->text();
+        lines[i]->setText("");
+    }
+    ui->FeatureInfoTextEdit->setText("");
 }
 
 void MainWindow::newContact()
@@ -144,9 +198,7 @@ void MainWindow::iGotTheFocusPaste()
     // out put to the comandline
     //qDebug() << s;
 
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 25; i++)
     {
         if (lines[i]->hasFocus())
         {
@@ -155,360 +207,48 @@ void MainWindow::iGotTheFocusPaste()
         }
     }
 
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    // Costumer Data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    if (ui->CompanySlineEdit->hasFocus())
+    if (ui->FeatureInfoTextEdit->hasFocus())
     {
-        ui->CompanySlineEdit->paste();
+        ui->FeatureInfoTextEdit->paste();
     }
-
-    if (ui->PositionSlineEdit->hasFocus())
-    {
-        ui->PositionSlineEdit->paste();
-    }
-
-    if (ui->StreatSlineEdit->hasFocus())
-    {
-        ui->StreatSlineEdit->paste();
-    }
-
-    if (ui->PLZSlineEdit->hasFocus())
-    {
-        ui->PLZSlineEdit->paste();
-    }
-
-    if (ui->TownSlineEdit->hasFocus())
-    {
-        ui->TownSlineEdit->paste();
-    }
-
-    if (ui->LandSlineEdit->hasFocus())
-    {
-        ui->LandSlineEdit->paste();
-    }
-
-    if (ui->TelephonSlineEdit->hasFocus())
-    {
-        ui->TelephonSlineEdit->paste();
-    }
-
-    if (ui->FAXSlineEdit->hasFocus())
-    {
-        ui->FAXSlineEdit->paste();
-    }
-
-    if (ui->MobileSlineEdit->hasFocus())
-    {
-        ui->MobileSlineEdit->paste();
-    }
-
-    if (ui->WebsiteSlineEdit->hasFocus())
-    {
-        ui->WebsiteSlineEdit->paste();
-    }
-
-    //////////////////////////////////////////////////
-    // Costumer Data /////////////////////////////////
 }
 
 void MainWindow::iGotTheFocusCut()
 {
-    if (ui->WebsiteSlineEdit->hasFocus())
+    for (int i = 0; i < 25; i++)
     {
-        ui->WebsiteSlineEdit->cut();
+        if (lines[i]->hasFocus())
+        {
+            lines[i]->cut();
+        }
     }
 
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-    if (ui->TitlePlineEdit->hasFocus())
+    // Feature Info ///////////////////////////////////
+    ///////////////////////////////////////////////////
+    if (ui->FeatureInfoTextEdit->hasFocus())
     {
-        ui->TitlePlineEdit->cut();
+        ui->FeatureInfoTextEdit->cut();
     }
-
-    if (ui->FirstNamePlineEdit->hasFocus())
-    {
-        ui->FirstNamePlineEdit->cut();
-    }
-
-    if (ui->LastNamePlineEdit->hasFocus())
-    {
-        ui->LastNamePlineEdit->cut();
-    }
-
-    if (ui->EMailPlineEdit->hasFocus())
-    {
-        ui->EMailPlineEdit->cut();
-    }
-
-    if (ui->WebsitePTlineEdit->hasFocus())
-    {
-        ui->WebsitePTlineEdit->cut();
-    }
-
-    if (ui->MobilFonePlineEdit->hasFocus())
-    {
-        ui->MobilFonePlineEdit->cut();
-    }
-
-    if (ui->TelefonPlineEdit->hasFocus())
-    {
-        ui->TelefonPlineEdit->cut();
-    }
-
-    if (ui->StreetPlineEdit->hasFocus())
-    {
-        ui->StreetPlineEdit->cut();
-    }
-
-    if (ui->PLZPlineEdit->hasFocus())
-    {
-        ui->PLZPlineEdit->cut();
-    }
-
-    if (ui->TownPlineEdit->hasFocus())
-    {
-        ui->TownPlineEdit->cut();
-    }
-
-    if (ui->LandPlineEdit->hasFocus())
-    {
-        ui->LandPlineEdit->cut();
-    }
-
-    if (ui->FAXPlineEdit->hasFocus())
-    {
-        ui->FAXPlineEdit->cut();
-    }
-
-    if (ui->ICQNumberPlineEdit->hasFocus())
-    {
-        ui->ICQNumberPlineEdit->cut();
-    }
-
-    if (ui->SkypPlineEdit->hasFocus())
-    {
-        ui->SkypPlineEdit->cut();
-    }
-
-    if (ui->BirthdayPlineEdit->hasFocus())
-    {
-        ui->BirthdayPlineEdit->cut();
-    }
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    // Costumer Data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    if (ui->CompanySlineEdit->hasFocus())
-    {
-        ui->CompanySlineEdit->cut();
-    }
-
-    if (ui->PositionSlineEdit->hasFocus())
-    {
-        ui->PositionSlineEdit->cut();
-    }
-
-    if (ui->StreatSlineEdit->hasFocus())
-    {
-        ui->StreatSlineEdit->cut();
-    }
-
-    if (ui->PLZSlineEdit->hasFocus())
-    {
-        ui->PLZSlineEdit->cut();
-    }
-
-    if (ui->TownSlineEdit->hasFocus())
-    {
-        ui->TownSlineEdit->cut();
-    }
-
-    if (ui->LandSlineEdit->hasFocus())
-    {
-        ui->LandSlineEdit->cut();
-    }
-
-    if (ui->TelephonSlineEdit->hasFocus())
-    {
-        ui->TelephonSlineEdit->cut();
-    }
-
-    if (ui->FAXSlineEdit->hasFocus())
-    {
-        ui->FAXSlineEdit->cut();
-    }
-
-    if (ui->MobileSlineEdit->hasFocus())
-    {
-        ui->MobileSlineEdit->cut();
-    }
-
-    if (ui->WebsiteSlineEdit->hasFocus())
-    {
-        ui->WebsiteSlineEdit->cut();
-    }
-
-    //////////////////////////////////////////////////
-    // Costumer Data /////////////////////////////////
+    // Feature Info ///////////////////////////////////
+    ///////////////////////////////////////////////////
 }
 
 void MainWindow::iGotTheFocusCopy()
 {
-    if (ui->WebsiteSlineEdit->hasFocus())
+    for (int i = 0; i < 25; i++)
     {
-        ui->WebsiteSlineEdit->copy();
+        if (lines[i]->hasFocus())
+        {
+            lines[i]->copy();
+        }
     }
 
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-    if (ui->TitlePlineEdit->hasFocus())
+    // Feature Info ///////////////////////////////////
+    ///////////////////////////////////////////////////
+    if (ui->FeatureInfoTextEdit->hasFocus())
     {
-        ui->TitlePlineEdit->copy();
+        ui->FeatureInfoTextEdit->copy();
     }
-
-    if (ui->FirstNamePlineEdit->hasFocus())
-    {
-        ui->FirstNamePlineEdit->copy();
-    }
-
-    if (ui->LastNamePlineEdit->hasFocus())
-    {
-        ui->LastNamePlineEdit->copy();
-    }
-
-    if (ui->EMailPlineEdit->hasFocus())
-    {
-        ui->EMailPlineEdit->copy();
-    }
-
-    if (ui->WebsitePTlineEdit->hasFocus())
-    {
-        ui->WebsitePTlineEdit->copy();
-    }
-
-    if (ui->MobilFonePlineEdit->hasFocus())
-    {
-        ui->MobilFonePlineEdit->copy();
-    }
-
-    if (ui->TelefonPlineEdit->hasFocus())
-    {
-        ui->TelefonPlineEdit->copy();
-    }
-
-    if (ui->StreetPlineEdit->hasFocus())
-    {
-        ui->StreetPlineEdit->copy();
-    }
-
-    if (ui->PLZPlineEdit->hasFocus())
-    {
-        ui->PLZPlineEdit->copy();
-    }
-
-    if (ui->TownPlineEdit->hasFocus())
-    {
-        ui->TownPlineEdit->copy();
-    }
-
-    if (ui->LandPlineEdit->hasFocus())
-    {
-        ui->LandPlineEdit->copy();
-    }
-
-    if (ui->FAXPlineEdit->hasFocus())
-    {
-        ui->FAXPlineEdit->copy();
-    }
-
-    if (ui->ICQNumberPlineEdit->hasFocus())
-    {
-        ui->ICQNumberPlineEdit->copy();
-    }
-
-    if (ui->SkypPlineEdit->hasFocus())
-    {
-        ui->SkypPlineEdit->copy();
-    }
-
-    if (ui->BirthdayPlineEdit->hasFocus())
-    {
-        ui->BirthdayPlineEdit->copy();
-    }
-    // personal data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    // Costumer Data /////////////////////////////////
-    //////////////////////////////////////////////////
-
-    if (ui->CompanySlineEdit->hasFocus())
-    {
-        ui->CompanySlineEdit->copy();
-    }
-
-    if (ui->PositionSlineEdit->hasFocus())
-    {
-        ui->PositionSlineEdit->copy();
-    }
-
-    if (ui->StreatSlineEdit->hasFocus())
-    {
-        ui->StreatSlineEdit->copy();
-    }
-
-    if (ui->PLZSlineEdit->hasFocus())
-    {
-        ui->PLZSlineEdit->copy();
-    }
-
-    if (ui->TownSlineEdit->hasFocus())
-    {
-        ui->TownSlineEdit->copy();
-    }
-
-    if (ui->LandSlineEdit->hasFocus())
-    {
-        ui->LandSlineEdit->copy();
-    }
-
-    if (ui->TelephonSlineEdit->hasFocus())
-    {
-        ui->TelephonSlineEdit->copy();
-    }
-
-    if (ui->FAXSlineEdit->hasFocus())
-    {
-        ui->FAXSlineEdit->copy();
-    }
-
-    if (ui->MobileSlineEdit->hasFocus())
-    {
-        ui->MobileSlineEdit->copy();
-    }
-
-    if (ui->WebsiteSlineEdit->hasFocus())
-    {
-        ui->WebsiteSlineEdit->copy();
-    }
-
-    //////////////////////////////////////////////////
-    // Costumer Data /////////////////////////////////
-}
-
-// QActions /////////////////////////////////
-
-void MainWindow::contextMenuEvent(QContextMenuEvent *event)
-{
-    QMenu menu(this);
-    menu.addAction(pasteAct);
-    menu.addSeparator();
-    menu.addAction(cutAct);
-    menu.addAction(copyAct);
-    menu.exec(event->globalPos());
+    // Feature Info ///////////////////////////////////
+    ///////////////////////////////////////////////////
 }
