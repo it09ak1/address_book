@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "AddinExport.h"
+//#include "AddinExport.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
@@ -200,6 +200,7 @@ void MainWindow::newContact()
 {
     ui->widgetNeuKontakt->show();
 }
+/*
 void MainWindow::importXMLAct() {
 
 
@@ -216,7 +217,7 @@ void MainWindow::exportExcelAct() {
 
 
 }
-
+*/
 void MainWindow::exit()
 {
     this->close();
