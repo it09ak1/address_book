@@ -16,7 +16,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(buttonAbort, SIGNAL(clicked()), this, SLOT(abortContact()));
 
     ui->buttonBox->addButton(buttonSave, QDialogButtonBox::ActionRole);
+
+    // warum hier nicht RejectRole??
     ui->buttonBox->addButton(buttonAbort, QDialogButtonBox::ActionRole);
+
 
     //QPushButton *buttonSave = new QPushButton("Speichern");
 
@@ -89,7 +92,7 @@ void MainWindow::rightMouseMenuNewContact()
 {
     for (int i = 0; i < 25; i++)
     {
-        connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this ,SLOT(showContextMenu()));
+        connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this , SLOT(showContextMenu()));
     }
 
     connect(ui->FeatureInfoTextEdit, SIGNAL(customContextMenuRequested(QPoint)), this ,SLOT(showContextMenu()));
