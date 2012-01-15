@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "AddinExport.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     createMenus();
     initLineEdit();
     rightMouseMenuNewContact();
+
+    addinExport *addWidget = new addinExport(this);
 }
 
 MainWindow::~MainWindow()
@@ -184,7 +186,8 @@ void MainWindow::abortContact()
     // Lösche alle Felder
     // Initialisiere mit ""
     */
-    delete ui->widgetNeuKontakt;
+    //delete ui->widgetNeuKontakt;
+
     for (int i = 0; i < 25; i++)
     {
         //qDebug() << lines[i]->text(); <-- was sollte hier passieren? bitshifting?
