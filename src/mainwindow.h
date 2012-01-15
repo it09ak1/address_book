@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
-
+//blubb
 namespace Ui {
     class MainWindow;
 }
@@ -11,6 +11,8 @@ namespace Ui {
 class QAction;
 class QActionGroup;
 class QMenu;
+// Klasse bekannt machen
+class AddinExport;
 
 class MainWindow : public QMainWindow
 {
@@ -99,6 +101,8 @@ private:
     QPushButton *buttonAbort;
 
     QLineEdit *lines[25];
+
+    AddinExport *addExport;
 };
 
 

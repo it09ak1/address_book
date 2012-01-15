@@ -1,3 +1,4 @@
+#include "addinExport.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPushButton>
@@ -30,6 +31,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     createMenus();
     initLineEdit();
     rightMouseMenuNewContact();
+
+    /* Pointer mit gefordertem Parameter
+    ** der übergebene Parameter ist Pointer auf Instanz der Klasse MainWindow
+    ** im Konstruktor darf mit "this" gearbeitet werden
+    */
+    //addinExport *addWidget = new addinExport(this);
+    addExport = new AddinExport;
 }
 
 MainWindow::~MainWindow()
@@ -107,11 +115,9 @@ void MainWindow::createActions()
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
-
     importExcelAct = new QAction(tr("... von Excel"), this);
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
-
     exportExcelAct = new QAction(tr("... nach Excel"), this);
 
     exitAct = new QAction(tr("&Beenden"), this);
@@ -120,11 +126,8 @@ void MainWindow::createActions()
 
     // Actions View Menu
     listAct = new QAction(tr("Liste"), this);
-
     detailAct = new QAction(tr("Detail"), this);
-
     singelViewAct = new QAction(tr("Einzelansicht"), this);
-
     viewInGroupAct = new QAction(tr("In Gruppen Anzeigen"), this);
 
     // Actions Help Menu
@@ -184,11 +187,11 @@ void MainWindow::abortContact()
     // Lösche alle Felder
     // Initialisiere mit ""
     */
-//    delete ui->widgetNeuKontakt;
+    //delete ui->widgetNeuKontakt;
+
     for (int i = 0; i < 25; i++)
     {
-        // Kontrolle ob er hier ankommt und was in den QLineEdit steht
-        //qDebug() << lines[i]->text();
+        //qDebug() << lines[i]->text(); <-- was sollte hier passieren? bitshifting?
         lines[i]->setText("");
     }
     ui->FeatureInfoTextEdit->setText("");
@@ -199,24 +202,22 @@ void MainWindow::newContact()
     ui->widgetNeuKontakt->show();
 }
 
-/*
-void MainWindow::importXMLAct() {
+//void MainWindow::importXMLAct() {
 
 
-}
-void MainWindow::importExcelAct() {
+//}
+//void MainWindow::importExcelAct() {
 
 
-}
-void MainWindow::exportXMLAct() {
+//}
+//void MainWindow::exportXMLAct() {
 
 
-}
-void MainWindow::exportExcelAct() {
+//}
+//void MainWindow::exportExcelAct() {
 
 
-}
-*/
+//}
 
 void MainWindow::exit()
 {
@@ -227,7 +228,6 @@ void MainWindow::iGotTheFocusPaste()
 {
     //QString s = ui->WebsiteSlineEdit->objectName();
     // out put to the comandline
-    // Kontrolle ob er hier ankommt und was in den QLineEdit steht
     //qDebug() << s;
 
     for (int i = 0; i < 25; i++)

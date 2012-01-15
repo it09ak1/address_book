@@ -17,6 +17,15 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     addinexport.h
 
+=======
+
+HEADERS  += mainwindow.h \
+
+
 FORMS    += mainwindow.ui
+
+
+
+
 
 
