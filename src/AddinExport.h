@@ -5,7 +5,7 @@
 #include <QMainWindow>
 #include <QtGui>
 
-// vorwärtsdeklaration auf MainWindow an den Compiler
+// Vorwärtsdeklaration auf MainWindow an den Compiler
 class MainWindow;
 
 /*
@@ -18,7 +18,13 @@ class addinExport : public QWidget {
     MainWindow *myWindow;
 
 public:
+    /*
+    ** durch Vorwärtsdeklaration muss Variable belegt werden
+    ** Durch Konstruktor realisiert
+    ** wollen auf UI Elemente des Elternteiles zugreifen
+    */
     addinExport (MainWindow*);
+
     ~addinExport ();
 
 };
