@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ** der übergebene Parameter ist Pointer auf Instanz der Klasse MainWindow
     ** im Konstruktor darf mit "this" gearbeitet werden
     */
-    addinExport *addWidget = new addinExport(this);
+    //addinExport *addWidget = new addinExport(this);
 
 }
 
@@ -114,11 +114,9 @@ void MainWindow::createActions()
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
-
     importExcelAct = new QAction(tr("... von Excel"), this);
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
-
     exportExcelAct = new QAction(tr("... nach Excel"), this);
 
     exitAct = new QAction(tr("&Beenden"), this);
@@ -127,11 +125,8 @@ void MainWindow::createActions()
 
     // Actions View Menu
     listAct = new QAction(tr("Liste"), this);
-
     detailAct = new QAction(tr("Detail"), this);
-
     singelViewAct = new QAction(tr("Einzelansicht"), this);
-
     viewInGroupAct = new QAction(tr("In Gruppen Anzeigen"), this);
 
     // Actions Help Menu
