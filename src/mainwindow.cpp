@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ** im Konstruktor darf mit "this" gearbeitet werden
     */
     //addinExport *addWidget = new addinExport(this);
-    addExport = new AddinExport;
+    //addExport = new AddinExport;
 }
 
 MainWindow::~MainWindow()

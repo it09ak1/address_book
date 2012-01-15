@@ -1,6 +1,14 @@
-#include "addinexport.h"
+#include "AddinExport.h"
+#include <QtGui>
+#include <QDebug>
 
-AddinExport::AddinExport(QWidget *parent) :
-    QWidget(parent)
-{
+//initialisierungsliste:
+AddinExport::AddinExport(MainWindow *mWindow):MainWindow(mWindow) {
 }
+
+/* ersetzt den folgenden ausdruck:
+addinExport::addinExport(MainWindow *mWindow) {
+
+MainWindow = mWindow;
+}
+*/

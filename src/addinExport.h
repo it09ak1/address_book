@@ -1,18 +1,35 @@
 #ifndef ADDINEXPORT_H
 #define ADDINEXPORT_H
 
-#include <QWidget>
+#include <QMainWindow>
+#include <QtGui>
 
-class AddinExport : public QWidget
-{
+// Vorwärtsdeklaration auf MainWindow an den Compiler
+class MainWindow;
+
+/*
+** von QWidget erben,
+** damit alle essentiellen QT Eigenschaften vorhanden
+*/
+class AddinExport : public QWidget {
+
     Q_OBJECT
+
+    // muss im Konstruktor belegt werden
+    MainWindow *myWindow;
+
 public:
-    explicit AddinExport(QWidget *parent = 0);
-    
-signals:
-    
-public slots:
-    
+    /*
+    ** durch Vorwärtsdeklaration muss Variable belegt werden
+    ** Durch Konstruktor realisiert
+    ** wollen auf UI Elemente des Elternteiles zugreifen
+    */
+    AddinExport(MainWindow*);
+    ~AddinExport();
+
+private:
+    //void test();
+
 };
 
 #endif // ADDINEXPORT_H
