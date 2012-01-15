@@ -31,7 +31,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initLineEdit();
     rightMouseMenuNewContact();
 
+    /* Pointer mit gefordertem Parameter
+    ** der übergebene Parameter ist Pointer auf Instanz der Klasse MainWindow
+    ** im Konstruktor darf mit "this" gearbeitet werden
+    */
     addinExport *addWidget = new addinExport(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -199,6 +204,22 @@ void MainWindow::abortContact()
 void MainWindow::newContact()
 {
     ui->widgetNeuKontakt->show();
+}
+void MainWindow::importXMLAct() {
+
+
+}
+void MainWindow::importExcelAct() {
+
+
+}
+void MainWindow::exportXMLAct() {
+
+
+}
+void MainWindow::exportExcelAct() {
+
+
 }
 
 void MainWindow::exit()
