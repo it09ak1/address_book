@@ -7,6 +7,8 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Programmstart -> Kein neuer Kontakt sondern leeres Feld
     ui->widgetNeuKontakt->close();
 
     buttonSave = new QPushButton("Speichern");
@@ -172,11 +174,17 @@ void MainWindow::createMenus()
 ////////////////////////////////////////////////
 void MainWindow::abortContact()
 {
+    // Schließe aktuellen Kontakt
     ui->widgetNeuKontakt->close();
-    //delete ui->widgetNeuKontakt;
+
+    /*
+    // Lösche alle Felder
+    // Initialisiere mit ""
+    */
+    delete ui->widgetNeuKontakt;
     for (int i = 0; i < 25; i++)
     {
-        //qDebug() << lines[i]->text();
+        //qDebug() << lines[i]->text(); <-- was sollte hier passieren? bitshifting?
         lines[i]->setText("");
     }
     ui->FeatureInfoTextEdit->setText("");

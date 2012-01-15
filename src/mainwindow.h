@@ -28,19 +28,26 @@ public:
 private slots:
     // FileMenu
     void newContact();
-    //void importXML();
-    //void importExcel();
-    //void exportXML();
-    //void exportExcel();
-    //------------------
+
+/*
+    void importXML();
+    void importExcel();
+    void exportXML();
+    void exportExcel();
+*/
+
     void exit();
-    // View
-    //void list();
-    //void detail();
-    //void singelView();
-    //void viewInGroup();
-    // Help
-    //void info();
+
+/*
+    View
+    void list();
+    void detail();
+    void singelView();
+    void viewInGroup();
+    void info();
+
+    Help <-- ?????????
+*/
     void iGotTheFocusPaste();
     void iGotTheFocusCut();
     void iGotTheFocusCopy();
