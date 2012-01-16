@@ -5,18 +5,19 @@
 #include <QtGui>
 
 // Vorwärtsdeklaration auf MainWindow an den Compiler
-class MainWindow;
+//namespace Ui {
+    class MainWindow;
+//}
 
 /*
 ** von QWidget erben,
 ** damit alle essentiellen QT Eigenschaften vorhanden
 */
-class AddinExport : public QWidget {
+class AddinExport : public QMainWindow {
 
     Q_OBJECT
 
-    // muss im Konstruktor belegt werden
-    MainWindow *myWindow;
+    //MainWindow *myWindow;
 
 public:
     /*
@@ -24,11 +25,12 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(MainWindow*);
-    ~AddinExport();
+    AddinExport(MainWindow *mWindow);
+    //~AddinExport(); // destruktor
 
 private:
-    //void test();
+    void test();
+    MainWindow *main;
 
 };
 

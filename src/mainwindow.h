@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
-//blubb
+
 namespace Ui {
     class MainWindow;
 }
@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QLineEdit returnLines(); // Objekt vom type returnLines
 
     // rigth mouse click Menu ??
 //protected:
@@ -31,12 +32,12 @@ private slots:
     // FileMenu
     void newContact();
 
-/*
+
     void importXML();
-    void importExcel();
-    void exportXML();
-    void exportExcel();
-*/
+//    void importExcel();
+//    void exportXML();
+//    void exportExcel();
+
 
     void exit();
 

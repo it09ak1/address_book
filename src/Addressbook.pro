@@ -12,15 +12,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    addinexport.cpp
+    addinExport.cpp
 
 HEADERS  += mainwindow.h \
-    addinexport.h
-
-=======
-
-HEADERS  += mainwindow.h \
-
+    addinExport.h
 
 FORMS    += mainwindow.ui
 

@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ** im Konstruktor darf mit "this" gearbeitet werden
     */
     //addinExport *addWidget = new addinExport(this);
-    //addExport = new AddinExport;
+    addExport = new AddinExport(this);
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +56,11 @@ void MainWindow::showContextMenu()
     menu2->addAction(cutAct);
     menu2->addAction(copyAct);
     menu2->exec(QCursor::pos());
+}
+
+QLineEdit MainWindow::returnLines()
+{
+    return lines;
 }
 
 void MainWindow::initLineEdit()
@@ -202,10 +207,11 @@ void MainWindow::newContact()
     ui->widgetNeuKontakt->show();
 }
 
-//void MainWindow::importXMLAct() {
+void MainWindow::importXML() {
 
 
-//}
+
+}
 //void MainWindow::importExcelAct() {
 
 
