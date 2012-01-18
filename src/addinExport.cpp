@@ -6,10 +6,21 @@
 //initialisierungsliste:
 AddinExport::AddinExport(MainWindow *mWindow, int action) {
 
-    QLineEdit *lines = mWindow->returnLines();
+    QLineEdit *aFoo = mWindow->returnLines();
+    //exportLines = mWindow->returnLines();
 
     qDebug() << mWindow->returnLines();
-    qDebug() << lines->text();
+    qDebug() << aFoo->text();
+
+/*
+    switch (action)
+    case 1:
+        this->ExportToXML();
+
+}
+void AddinExport::ExportToXML() {
 
 
+}
+*/
 }

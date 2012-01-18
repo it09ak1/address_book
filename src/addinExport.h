@@ -4,20 +4,12 @@
 #include <QMainWindow>
 #include <QtGui>
 
-// Vorwärtsdeklaration auf MainWindow an den Compiler
-//namespace Ui {
-    class MainWindow;
-//}
+class MainWindow;
 
-/*
-** von QWidget erben,
-** damit alle essentiellen QT Eigenschaften vorhanden
-*/
 class AddinExport : public QMainWindow {
 
     Q_OBJECT
 
-    //MainWindow *myWindow;
 
 public:
     /*
@@ -26,12 +18,15 @@ public:
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
     AddinExport(MainWindow *mWindow, int action);
-    //~AddinExport(); // destruktor
+    ~AddinExport(); // destruktor
+
+
+
 
 private:
-    void test();
+    void ExportToXML();
+    QLineEdit *exportLines;
     MainWindow *main;
-
 };
 
 #endif // ADDINEXPORT_H
