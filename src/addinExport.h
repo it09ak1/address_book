@@ -25,7 +25,7 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(MainWindow *mWindow);
+    AddinExport(MainWindow *mWindow, int action);
     //~AddinExport(); // destruktor
 
 private:

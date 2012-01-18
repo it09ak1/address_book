@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ** im Konstruktor darf mit "this" gearbeitet werden
     */
     //addinExport *addWidget = new addinExport(this);
-    addExport = new AddinExport(this);
+    addExport = new AddinExport(this,1);
 }
 
 MainWindow::~MainWindow()
@@ -58,45 +58,45 @@ void MainWindow::showContextMenu()
     menu2->exec(QCursor::pos());
 }
 
-QLineEdit MainWindow::returnLines()
+QLineEdit *MainWindow::returnLines()
 {
-    return lines;
+    return *this->lines;
 }
 
 void MainWindow::initLineEdit()
 {
     // personal data /////////////////////////////////
     //////////////////////////////////////////////////
-    lines[0] = ui->TitlePlineEdit;
-    lines[1] = ui->FirstNamePlineEdit;
-    lines[2] = ui->LastNamePlineEdit;
-    lines[3] = ui->EMailPlineEdit;
-    lines[4] = ui->WebsitePTlineEdit;
-    lines[5] = ui->MobilFonePlineEdit;
-    lines[6] = ui->TelefonPlineEdit;
-    lines[7] = ui->StreetPlineEdit;
-    lines[8] = ui->PLZPlineEdit;
-    lines[9] = ui->TownPlineEdit;
-    lines[10] = ui->LandPlineEdit;
-    lines[11] = ui->FAXPlineEdit;
-    lines[12] = ui->ICQNumberPlineEdit;
-    lines[13] = ui->SkypPlineEdit;
-    lines[14] = ui->BirthdayPlineEdit;
+    lines[0] = this->ui->TitlePlineEdit;
+    lines[1] = this->ui->FirstNamePlineEdit;
+    lines[2] = this->ui->LastNamePlineEdit;
+    lines[3] = this->ui->EMailPlineEdit;
+    lines[4] = this->ui->WebsitePTlineEdit;
+    lines[5] = this->ui->MobilFonePlineEdit;
+    lines[6] = this->ui->TelefonPlineEdit;
+    lines[7] = this->ui->StreetPlineEdit;
+    lines[8] = this->ui->PLZPlineEdit;
+    lines[9] = this->ui->TownPlineEdit;
+    lines[10] = this->ui->LandPlineEdit;
+    lines[11] = this->ui->FAXPlineEdit;
+    lines[12] = this->ui->ICQNumberPlineEdit;
+    lines[13] = this->ui->SkypPlineEdit;
+    lines[14] = this->ui->BirthdayPlineEdit;
     // personal data /////////////////////////////////
     //////////////////////////////////////////////////
 
     // Costumer Data /////////////////////////////////
     //////////////////////////////////////////////////
-    lines[15] = ui->CompanySlineEdit;
-    lines[16] = ui->PositionSlineEdit;
-    lines[17] = ui->StreatSlineEdit;
-    lines[18] = ui->PLZSlineEdit;
-    lines[19] = ui->TownSlineEdit;
-    lines[20] = ui->LandSlineEdit;
-    lines[21] = ui->TelephonSlineEdit;
-    lines[22] = ui->FAXSlineEdit;
-    lines[23] = ui->MobileSlineEdit;
-    lines[24] = ui->WebsiteSlineEdit;
+    lines[15] = this->ui->CompanySlineEdit;
+    lines[16] = this->ui->PositionSlineEdit;
+    lines[17] = this->ui->StreatSlineEdit;
+    lines[18] = this->ui->PLZSlineEdit;
+    lines[19] = this->ui->TownSlineEdit;
+    lines[20] = this->ui->LandSlineEdit;
+    lines[21] = this->ui->TelephonSlineEdit;
+    lines[22] = this->ui->FAXSlineEdit;
+    lines[23] = this->ui->MobileSlineEdit;
+    lines[24] = this->ui->WebsiteSlineEdit;
     // Costumer Data /////////////////////////////////
     //////////////////////////////////////////////////
 }
