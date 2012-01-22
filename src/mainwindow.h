@@ -103,9 +103,13 @@ private:
     QPushButton *buttonAbort;
 
     QLineEdit *lines[25];
-    //QLineEdit **lines;
 
     AddinExport *addExport;
+
+
+    struct QStringArray {
+        QString arr[25];
+    };
 };
 
 
