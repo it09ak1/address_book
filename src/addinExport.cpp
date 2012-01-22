@@ -1,16 +1,17 @@
 #include "AddinExport.h"
 #include "mainwindow.h"
 #include <QtGui>
+#include <QFile>
 #include <QDebug>
 #include <QtXml/qdom.h>
 #include <qtextstream.h>
 #include <qstring.h>
 
-//initialisierungsliste:
-AddinExport::AddinExport(QLineEdit *exportLines, int action) {
 
-    qDebug() << exportLines->text();
+AddinExport::AddinExport(QString sLines, int action) {
 
+    qDebug() << sLines;
+    exportLines = sLines;
     /*
     ** unter "action" mitgegebener Parameter wird genutzt um die richtige
     ** Funktion aufzurufen
@@ -27,19 +28,24 @@ AddinExport::AddinExport(QLineEdit *exportLines, int action) {
 void AddinExport::exportToXML() {
 
     // xdoc ist erzeugt ein Dom Dokument mit Namen
-    QDomDocument xdoc("ExportDoc");
+    QDomDocument xdoc(exportLines);
 
     // hängt einen Kindnoten an
-    QDomElement root = xdoc.createElement("Root");
+    QDomElement root = xdoc.createElement("Data");
     xdoc.appendChild(root);
 
     //hängt an den Kindknoten ein tag
-    QDomElement tag = xdoc.createElement("Child");
-    root.appendChild(tag);
+    QDomElement c = xdoc.createElement("Contact");
+    QString t = exportLines;
+    c.setAttribute ("Name", t );
+    //root.appendChild(ContactToNode (xdoc) );
+    root.appendChild(c);
+
+
 
     //hängt an den Tag des Kindknoten ein Textelement
-    QDomText text = xdoc.createTextNode("text");
-    tag.appendChild(text);
+    //QDomText text = xdoc.createTextNode("text");
+    //tag.appendChild(text);
 
     // wandelt das Dom Dokument in einen QString um
     QString outData = xdoc.toString();
@@ -48,7 +54,8 @@ void AddinExport::exportToXML() {
      * öffnen und schließen einer Datei hier wird das Dom Dokument eingefügt
      * dies geschieht über einen QTextStream
      */
-    QFile f;
+    QFile f("out.txt");
+    //f.setFileName ("out.txt");
     f.open( QIODevice::WriteOnly | QIODevice::Text );
     QTextStream out(&f);
 
@@ -57,4 +64,26 @@ void AddinExport::exportToXML() {
     f.close();
 
 }
+QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
+{
+    QDomElement cNode = xdoc.createElement( "Contact" );
 
+    QString t = this->exportLines;
+    cNode.setAttribute( "Title", t );
+    /*   cNode.setAttribute( "FirstName", this->exportLines[1]->text() );
+    cNode.setAttribute( "LastName", this->exportLines[2]->text() );
+    cNode.setAttribute( "EMail", this->exportLines[3]->text() );
+    cNode.setAttribute( "Website", this->exportLines[4]->text() );
+    cNode.setAttribute( "MobilePhone", this->exportLines[5]->text() );
+    cNode.setAttribute( "Telephone", this->exportLines[6]->text() );
+    cNode.setAttribute( "Street", this->exportLines[7]->text() );
+    cNode.setAttribute( "PLZ", this->exportLines[8]->text() );
+    cNode.setAttribute( "Town", this->exportLines[9]->text() );
+    cNode.setAttribute( "Land", this->exportLines[10]->text() );
+    cNode.setAttribute( "FAX", this->exportLines[11]->text() );
+    cNode.setAttribute( "ICQNumber", this->exportLines[12]->text() );
+    cNode.setAttribute( "Skype", this->exportLines[13]->text() );
+    cNode.setAttribute( "Birthday", this->exportLines[14]->text() );
+    */
+    return cNode;
+}

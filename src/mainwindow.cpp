@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ** im Konstruktor darf mit "this" gearbeitet werden
     */
     //addinExport *addWidget = new addinExport(this);
-    addExport = new AddinExport(this->returnLines(),1);
+    addExport = new AddinExport(returnLines(),1);
 }
 
 MainWindow::~MainWindow()
@@ -58,15 +58,24 @@ void MainWindow::showContextMenu()
     menu2->exec(QCursor::pos());
 }
 
-QLineEdit *MainWindow::returnLines()
+//QLineEdit *MainWindow::returnLines()
+//{
+//    return *this->lines;
+//}
+QString MainWindow::returnLines ()
 {
-    return *this->lines;
+    QString f[25];
+    lines[1]->setText("name hier");
+    f[0] = lines[1]->displayText();
+
+    return f[0];
 }
 
 void MainWindow::initLineEdit()
 {
     // personal data /////////////////////////////////
     //////////////////////////////////////////////////
+
     lines[0] = this->ui->TitlePlineEdit;
     lines[1] = this->ui->FirstNamePlineEdit;
     lines[2] = this->ui->LastNamePlineEdit;

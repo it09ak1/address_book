@@ -5,7 +5,9 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT       += core gui\
+		    xml
+			
 TARGET = Addressbook
 TEMPLATE = app
 
@@ -15,7 +17,8 @@ SOURCES += main.cpp\
     addinExport.cpp
 
 HEADERS  += mainwindow.h \
-    addinExport.h
+    addinExport.h \
+    contact.h
 
 FORMS    += mainwindow.ui
 

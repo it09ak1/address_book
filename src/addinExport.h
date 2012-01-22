@@ -28,15 +28,15 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(QLineEdit *windowLines, int action);
+    AddinExport(QString sLines, int action);
     //~AddinExport(); // destruktor
 
-    QLineEdit *exportLines;
+    QString exportLines;
 
 
 private:
     void exportToXML();
-
+    QDomElement ContactToNode( QDomDocument &xdoc );
 };
 
 #endif // ADDINEXPORT_H
