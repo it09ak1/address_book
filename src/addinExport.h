@@ -28,14 +28,14 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(MainWindow *mWindow, int action);
+    AddinExport(QLineEdit *windowLines, int action);
     //~AddinExport(); // destruktor
 
     QLineEdit *exportLines;
 
 
 private:
-    void ExportToXML();
+    void exportToXML();
 
 };
 
