@@ -60,8 +60,11 @@ void MainWindow::showContextMenu()
 
 QLineEdit *MainWindow::returnLines()
 {
+	// array und Pointer zugleich
+	// wenn stern weg faelt, gbit man ein einfaches QLineEdit surueck (nicht Mehrdimensional)
     return *this->lines;
 }
+
 
 void MainWindow::initLineEdit()
 {
