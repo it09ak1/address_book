@@ -23,7 +23,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     //QLineEdit *returnLines(); // Objekt vom type returnLines
-    QString returnLines ();
+    QString* returnLines ();
 
     // rigth mouse click Menu ??
 //protected:

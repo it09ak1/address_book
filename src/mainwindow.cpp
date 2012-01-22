@@ -62,13 +62,17 @@ void MainWindow::showContextMenu()
 //{
 //    return *this->lines;
 //}
-QString MainWindow::returnLines ()
+QString* MainWindow::returnLines ()
 {
     QString f[25];
-    lines[1]->setText("name hier");
-    f[0] = lines[1]->displayText();
+    lines[0]->setText("name hier");
+    for(int i=0; i < 25; i++)
+    {
+        f[i] = lines[i]->displayText();
+    }
 
-    return f[0];
+
+    return f;
 }
 
 void MainWindow::initLineEdit()

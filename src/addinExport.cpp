@@ -8,9 +8,9 @@
 #include <qstring.h>
 
 
-AddinExport::AddinExport(QString sLines, int action) {
+AddinExport::AddinExport(QString sLines[25], int action) {
 
-    qDebug() << sLines;
+    qDebug() << sLines[0];
     exportLines = sLines;
     /*
     ** unter "action" mitgegebener Parameter wird genutzt um die richtige
@@ -28,7 +28,7 @@ AddinExport::AddinExport(QString sLines, int action) {
 void AddinExport::exportToXML() {
 
     // xdoc ist erzeugt ein Dom Dokument mit Namen
-    QDomDocument xdoc(exportLines);
+    QDomDocument xdoc(exportLines[0]);
 
     // hängt einen Kindnoten an
     QDomElement root = xdoc.createElement("Data");
@@ -36,7 +36,7 @@ void AddinExport::exportToXML() {
 
     //hängt an den Kindknoten ein tag
     QDomElement c = xdoc.createElement("Contact");
-    QString t = exportLines;
+    QString t = exportLines[1];
     c.setAttribute ("Name", t );
     //root.appendChild(ContactToNode (xdoc) );
     root.appendChild(c);
@@ -68,7 +68,7 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
 {
     QDomElement cNode = xdoc.createElement( "Contact" );
 
-    QString t = this->exportLines;
+    QString t = this->exportLines[0];
     cNode.setAttribute( "Title", t );
     /*   cNode.setAttribute( "FirstName", this->exportLines[1]->text() );
     cNode.setAttribute( "LastName", this->exportLines[2]->text() );

@@ -28,10 +28,10 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(QString sLines, int action);
+    AddinExport(QString* sLines, int action);
     //~AddinExport(); // destruktor
 
-    QString exportLines;
+    QString* exportLines;
 
 
 private:
