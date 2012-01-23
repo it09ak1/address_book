@@ -23,7 +23,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     //QLineEdit *returnLines(); // Objekt vom type returnLines
-    QString* returnLines ();
+    QStringList returnLines ();
 
     // rigth mouse click Menu ??
 //protected:
@@ -36,7 +36,7 @@ private slots:
 
     void importXML();
 //    void importExcel();
-//    void exportXML();
+    void exportXML();
 //    void exportExcel();
 
 
@@ -106,10 +106,6 @@ private:
 
     AddinExport *addExport;
 
-
-    struct QStringArray {
-        QString arr[25];
-    };
 };
 
 

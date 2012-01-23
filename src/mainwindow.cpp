@@ -32,12 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initLineEdit();
     rightMouseMenuNewContact();
 
-    /* Pointer mit gefordertem Parameter
-    ** der übergebene Parameter ist Pointer auf Instanz der Klasse MainWindow
-    ** im Konstruktor darf mit "this" gearbeitet werden
-    */
-    //addinExport *addWidget = new addinExport(this);
-    addExport = new AddinExport(returnLines(),1);
 }
 
 MainWindow::~MainWindow()
@@ -62,17 +56,19 @@ void MainWindow::showContextMenu()
 //{
 //    return *this->lines;
 //}
-QString* MainWindow::returnLines ()
+QStringList MainWindow::returnLines ()
 {
-    QString f[25];
-    lines[0]->setText("name hier");
+    QStringList fList;
+
+    // Debug: setze ein Element auf einen Wert
+    // lines[0]->setText("name hier");
+
     for(int i=0; i < 25; i++)
     {
-        f[i] = lines[i]->displayText();
+        fList.append(lines[i]->displayText());
     }
 
-
-    return f;
+    return fList;
 }
 
 void MainWindow::initLineEdit()
@@ -118,10 +114,12 @@ void MainWindow::rightMouseMenuNewContact()
 {
     for (int i = 0; i < 25; i++)
     {
-        connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this , SLOT(showContextMenu()));
+        connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this ,
+                SLOT(showContextMenu()));
     }
 
-    connect(ui->FeatureInfoTextEdit, SIGNAL(customContextMenuRequested(QPoint)), this ,SLOT(showContextMenu()));
+    connect(ui->FeatureInfoTextEdit, SIGNAL(customContextMenuRequested(QPoint)),
+            this ,SLOT(showContextMenu()));
 }
 
 void MainWindow::createActions()
@@ -136,7 +134,10 @@ void MainWindow::createActions()
     importExcelAct = new QAction(tr("... von Excel"), this);
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
+    connect(exportXMLAct, SIGNAL(triggered()), this, SLOT(exportXML()));
+
     exportExcelAct = new QAction(tr("... nach Excel"), this);
+
 
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
@@ -209,7 +210,7 @@ void MainWindow::abortContact()
 
     for (int i = 0; i < 25; i++)
     {
-        //qDebug() << lines[i]->text(); <-- was sollte hier passieren? bitshifting?
+        //qDebug() << lines[i]->text();
         lines[i]->setText("");
     }
     ui->FeatureInfoTextEdit->setText("");
@@ -229,10 +230,15 @@ void MainWindow::importXML() {
 
 
 //}
-//void MainWindow::exportXMLAct() {
+void MainWindow::exportXML() {
+    /*
+    ** der übergebene erste Parameter ist ein Objekt von QStringList
+    **      die QStringList beinhaltet alle Werte des lines pointers.
+    ** hier soll in XML exportiert werden, daher ist der zweite Parameter = 1
+    */
+    addExport = new AddinExport(returnLines(),1);
 
-
-//}
+}
 //void MainWindow::exportExcelAct() {
 
 

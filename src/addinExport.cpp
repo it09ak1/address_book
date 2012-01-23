@@ -8,10 +8,10 @@
 #include <qstring.h>
 
 
-AddinExport::AddinExport(QString sLines[25], int action) {
+AddinExport::AddinExport(QStringList sList, int action) {
 
-    qDebug() << sLines[0];
-    exportLines = sLines;
+    qDebug() << sList.join(", ");
+    exportList = sList;
     /*
     ** unter "action" mitgegebener Parameter wird genutzt um die richtige
     ** Funktion aufzurufen
@@ -24,23 +24,18 @@ AddinExport::AddinExport(QString sLines[25], int action) {
          */
         this->exportToXML();
 
+
 }
 void AddinExport::exportToXML() {
 
     // xdoc ist erzeugt ein Dom Dokument mit Namen
-    QDomDocument xdoc(exportLines[0]);
+    QDomDocument xdoc(exportList.at(0));
 
     // hängt einen Kindnoten an
     QDomElement root = xdoc.createElement("Data");
     xdoc.appendChild(root);
 
-    //hängt an den Kindknoten ein tag
-    QDomElement c = xdoc.createElement("Contact");
-    QString t = exportLines[1];
-    c.setAttribute ("Name", t );
-    //root.appendChild(ContactToNode (xdoc) );
-    root.appendChild(c);
-
+    root.appendChild(ContactToNode (xdoc) );
 
 
     //hängt an den Tag des Kindknoten ein Textelement
@@ -68,22 +63,21 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
 {
     QDomElement cNode = xdoc.createElement( "Contact" );
 
-    QString t = this->exportLines[0];
-    cNode.setAttribute( "Title", t );
-    /*   cNode.setAttribute( "FirstName", this->exportLines[1]->text() );
-    cNode.setAttribute( "LastName", this->exportLines[2]->text() );
-    cNode.setAttribute( "EMail", this->exportLines[3]->text() );
-    cNode.setAttribute( "Website", this->exportLines[4]->text() );
-    cNode.setAttribute( "MobilePhone", this->exportLines[5]->text() );
-    cNode.setAttribute( "Telephone", this->exportLines[6]->text() );
-    cNode.setAttribute( "Street", this->exportLines[7]->text() );
-    cNode.setAttribute( "PLZ", this->exportLines[8]->text() );
-    cNode.setAttribute( "Town", this->exportLines[9]->text() );
-    cNode.setAttribute( "Land", this->exportLines[10]->text() );
-    cNode.setAttribute( "FAX", this->exportLines[11]->text() );
-    cNode.setAttribute( "ICQNumber", this->exportLines[12]->text() );
-    cNode.setAttribute( "Skype", this->exportLines[13]->text() );
-    cNode.setAttribute( "Birthday", this->exportLines[14]->text() );
-    */
+    cNode.setAttribute( "Title",        this->exportList.at(0) );
+    cNode.setAttribute( "FirstName",    this->exportList.at(1) );
+    cNode.setAttribute( "LastName",     this->exportList.at(2) );
+    cNode.setAttribute( "EMail",        this->exportList.at(3) );
+    cNode.setAttribute( "Website",      this->exportList.at(4) );
+    cNode.setAttribute( "MobilePhone",  this->exportList.at(5) );
+    cNode.setAttribute( "Telephone",    this->exportList.at(6) );
+    cNode.setAttribute( "Street",       this->exportList.at(7) );
+    cNode.setAttribute( "PLZ",          this->exportList.at(8) );
+    cNode.setAttribute( "Town",         this->exportList.at(9) );
+    cNode.setAttribute( "Land",         this->exportList.at(10) );
+    cNode.setAttribute( "FAX",          this->exportList.at(11) );
+    cNode.setAttribute( "ICQNumber",    this->exportList.at(12) );
+    cNode.setAttribute( "Skype",        this->exportList.at(13) );
+    cNode.setAttribute( "Birthday",     this->exportList.at(14) );
+
     return cNode;
 }

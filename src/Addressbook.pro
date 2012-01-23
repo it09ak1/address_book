@@ -17,8 +17,7 @@ SOURCES += main.cpp\
     addinExport.cpp
 
 HEADERS  += mainwindow.h \
-    addinExport.h \
-    contact.h
+    addinExport.h
 
 FORMS    += mainwindow.ui
 

@@ -28,14 +28,15 @@ public:
     ** Durch Konstruktor realisiert
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
-    AddinExport(QString* sLines, int action);
+    AddinExport(QStringList sList, int action);
     //~AddinExport(); // destruktor
 
-    QString* exportLines;
+    QStringList exportList;
 
 
 private:
     void exportToXML();
+    void exportToCSV();
     QDomElement ContactToNode( QDomDocument &xdoc );
 };
 
