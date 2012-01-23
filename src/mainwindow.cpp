@@ -124,7 +124,12 @@ void MainWindow::rightMouseMenuNewContact()
 
 void MainWindow::createActions()
 {
-    // Actions File Menu
+    /*
+    ** Hier werden die Actions/Felder definiert
+    ** Shortcuts werden über die setShortcut() Methode zugewiesen
+    ** Signals und Slots werden über connect verbunden
+    **  Dazu ist eine Actions und eine entsprechende Methode notwendig
+    */
     newContactAct = new QAction(tr("&Neuer Kontakt"), this);
     newContactAct->setShortcut(Qt::CTRL + Qt::Key_N);
     newContactAct->setStatusTip(tr("Erstellen eines neuen Kontkts"));
@@ -235,8 +240,13 @@ void MainWindow::exportXML() {
     ** der übergebene erste Parameter ist ein Objekt von QStringList
     **      die QStringList beinhaltet alle Werte des lines pointers.
     ** hier soll in XML exportiert werden, daher ist der zweite Parameter = 1
+    ** Es wird geprüft ob die notwendigen Felder gefüllt ist
     */
-    addExport = new AddinExport(returnLines(),1);
+    if (lines[1]->text()!="" && lines[2]->text()!="")
+        addExport = new AddinExport(returnLines(),1);
+    else
+        qDebug() << "Vor- und Nachname leer";
+    // im else sollte noch eine Fehlermeldung erscheinen
 
 }
 //void MainWindow::exportExcelAct() {

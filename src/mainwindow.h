@@ -50,7 +50,7 @@ private slots:
     void viewInGroup();
     void info();
 
-    Help <-- ?????????
+    void help();
 */
     void iGotTheFocusPaste();
     void iGotTheFocusCut();

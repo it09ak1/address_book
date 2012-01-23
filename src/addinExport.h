@@ -37,6 +37,8 @@ public:
 private:
     void exportToXML();
     void exportToCSV();
+    // Schreibvorgang in dieser Methode ausgelagert. Dateityp = 2. Parameter
+    void writeFile(QString outData, int fileType);
     QDomElement ContactToNode( QDomDocument &xdoc );
 };
 
