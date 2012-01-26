@@ -265,9 +265,12 @@ void MainWindow::exportXML() {
     */
     if (lines[1]->text()!="" && lines[2]->text()!="")
         addExport = new AddinExport(returnLines(),1);
-    else
-        qDebug() << "Vor- und Nachname leer";
-    // im else sollte noch eine Fehlermeldung erscheinen
+    else {
+        //qDebug() << "Vor- und Nachname leer";
+
+        // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
+        QMessageBox::about(this,"Es wurde ein Fehler registriert","Bitte geben sie mindestens einen Vor- und Nachnamen ein");
+    }
 
 }
 //void MainWindow::exportExcelAct() {
