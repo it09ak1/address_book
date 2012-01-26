@@ -143,23 +143,23 @@ void AddinExport::writeFile(QString outData, int fileType)
      *
      * hier <soll> als Dateiparameter Nachname_Vorname_RND.csv sein
      */
-    QFile f;
-    switch(fileType)
-    {
-    // 23.01.2011 HIER GEHT NOCH WAS SCHIEF!
-    case 1: f.setFileName("out.xml");
-    case 2: f.setFileName("out.csv");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+        tr("XML File (*.xml)"));
+
+    if (fileName != "") {
+        QFile file(fileName);
+
+        /* Datei brauch nur schreibend geöffnet werden, alle Informationen
+        ** werden überschrieben. Die Ausgabe erfolgt im Textmodus
+        */
+        if (!file.open(QIODevice::WriteOnly)) {
+            // error message
+        } else {
+            QTextStream stream(&file);
+            stream << outData;
+            stream.flush();
+            file.close();
+        }
     }
 
-
-    /* Datei brauch nur schreibend geöffnet werden, alle Informationen werden
-    ** überschrieben. Die Ausgabe erfolgt im Textmodus
-    */
-    f.open( QIODevice::WriteOnly | QIODevice::Text );
-    QTextStream out(&f);
-
-    // hier wird die Information in die Datei geschrieben
-    out << outData;
-
-    f.close();
 }
