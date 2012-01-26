@@ -1,9 +1,13 @@
 #include "addinExport.h"
+#include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
+#include <QTableView>
+#include <QVBoxLayout>
+#include <QMdiSubWindow>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -110,10 +114,13 @@ void MainWindow::initLineEdit()
     //////////////////////////////////////////////////
 }
 
+// rechte Maus Menue fuer das Fenster "Neuer Kontakt"
 void MainWindow::rightMouseMenuNewContact()
 {
     for (int i = 0; i < 25; i++)
     {
+        // zuordener der QlineEdit Felder des Signals zum Slot showContextMenu()
+        // damit es auch nur gezeigt wird wenn sich der Courser im Feld befindet
         connect(lines[i], SIGNAL(customContextMenuRequested(QPoint)), this ,
                 SLOT(showContextMenu()));
     }
@@ -150,6 +157,9 @@ void MainWindow::createActions()
 
     // Actions View Menu
     listAct = new QAction(tr("Liste"), this);
+    listAct->setShortcut(Qt::CTRL + Qt::Key_L);
+    connect(listAct, SIGNAL(triggered()), this, SLOT(list()));
+
     detailAct = new QAction(tr("Detail"), this);
     singelViewAct = new QAction(tr("Einzelansicht"), this);
     viewInGroupAct = new QAction(tr("In Gruppen Anzeigen"), this);
@@ -222,7 +232,18 @@ void MainWindow::abortContact()
 }
 
 void MainWindow::newContact()
-{
+{    
+    if (widget->isVisible())
+    {
+        widget->close();
+    }
+
+    //centralWidget();
+    qDebug() << centralWidget();
+    qDebug() << layout();
+
+    //setCentralWidget(ui->widgetNeuKontakt);
+
     ui->widgetNeuKontakt->show();
 }
 
@@ -318,4 +339,61 @@ void MainWindow::iGotTheFocusCopy()
     }
     // Feature Info ///////////////////////////////////
     ///////////////////////////////////////////////////
+}
+
+// Oeffnen der Listen Ansicht
+void MainWindow::list()
+{
+    // schaue vor her ob nicht was anderes offen ist
+    // wenn ja, dann schliesse es zu erst
+    if (ui->widgetNeuKontakt->isVisible())
+    {
+        ui->widgetNeuKontakt->close();
+    }
+
+    // zeige mir die Listenansicht
+    //listViewOpen = new listView;
+    // test /////////////////////////////////////////////
+    // setzen der Position wo das QVBoxLayout beginnen soll
+    // und die Dimension
+
+    if (!widget->isVisible())
+    {
+        // past die Tabelle an die Fenstergroesse an
+        //int x = width();
+        //int y = height();
+        // Parameter (x, y, width, heih);
+        //QRect rect(10, 20, (x - 20), (y - 20));
+
+        // erzeugen des Tabellen Kopfes
+        QStandardItemModel *model = new QStandardItemModel;
+        model->setHorizontalHeaderItem(0, new QStandardItem(QString("Anrede")));
+        model->setHorizontalHeaderItem(1, new QStandardItem(QString("Name")));
+        model->setHorizontalHeaderItem(2, new QStandardItem(QString("Vornamen")));
+
+        // Deklarieren und Incrementieren der Tabelle
+        QTableView *tableView = new QTableView(this);
+        // zuordnen des Tabellen Kopfes der QTableView
+        tableView->setModel(model);
+        //tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        // Incrementierung des neuen Widget
+        widget = new QWidget;
+        // zuordnen der Tabele und Deklarieren und Incrementieren
+        // eines QVBoxLayout
+        QVBoxLayout *boxLayout = new QVBoxLayout;
+        boxLayout->addWidget(tableView);
+        widget->setLayout(boxLayout);
+        //widget->setGeometry(rect);
+        // dmit die Tabelle schön mit waechst wenn mann das Fenster
+        // vergroessert
+        widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        widget->setObjectName("widgetListView");
+
+        // zuweisen des neuen QWidget dem layout vom centralWidget
+        ui->centralWidget->layout()->addWidget(widget);
+        //setCentralWidget(widget);
+    }
+
+    // test /////////////////////////////////////////////
 }

@@ -13,6 +13,7 @@ class QActionGroup;
 class QMenu;
 // Klasse bekannt machen
 class AddinExport;
+class listView;
 
 class MainWindow : public QMainWindow
 {
@@ -42,16 +43,14 @@ private slots:
 
     void exit();
 
-/*
-    View
     void list();
-    void detail();
-    void singelView();
-    void viewInGroup();
-    void info();
+    //void detail();
+    //void singelView();
+    //void viewInGroup();
+    //void info();
 
-    void help();
-*/
+    //void help();
+
     void iGotTheFocusPaste();
     void iGotTheFocusCut();
     void iGotTheFocusCopy();
@@ -105,7 +104,10 @@ private:
     QLineEdit *lines[25];
 
     AddinExport *addExport;
+    listView *listViewOpen;
 
+    QWidget *widget;
+    QWidget *cloneWidget;
 };
 
 
