@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtGui>
+#include <QMap>
 
 namespace Ui {
     class MainWindow;
@@ -25,6 +26,7 @@ public:
     ~MainWindow();
     //QLineEdit *returnLines(); // Objekt vom type returnLines
     QStringList returnLines ();
+    QMap<int, QStringList> *contactValue;
 
     // rigth mouse click Menu ??
 //protected:
@@ -57,6 +59,8 @@ private slots:
 
     // Buttons
     void abortContact();
+    // Speichern Button vom Fenster "Neu Kontakt"
+    void saveContactData();
 
     void showContextMenu();
 
@@ -66,6 +70,8 @@ private:
     void createMenus();
     void initLineEdit();
     void rightMouseMenuNewContact();
+    // zum befuellen der QMap aus der TXT
+    void fillQMap();
 
     // Menus
     QMenu *fileMenu;
@@ -99,6 +105,7 @@ private:
 
     // Buttons
     QPushButton *buttonSave;
+
     QPushButton *buttonAbort;
 
     QLineEdit *lines[25];

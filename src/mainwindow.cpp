@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(buttonAbort, SIGNAL(clicked()), this, SLOT(abortContact()));
 
     ui->buttonBox->addButton(buttonSave, QDialogButtonBox::ActionRole);
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveContactData()));
 
     // warum hier nicht RejectRole??
     ui->buttonBox->addButton(buttonAbort, QDialogButtonBox::ActionRole);
@@ -35,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     createMenus();
     initLineEdit();
     rightMouseMenuNewContact();
+    fillQMap();
+
+    listViewOpen = new listView;
 
 }
 
@@ -45,6 +49,47 @@ MainWindow::~MainWindow()
 
 // In Qt own writen functions /////////////////////////
 ///////////////////////////////////////////////////////
+
+void MainWindow::fillQMap()
+{
+    // hier wird die QMap alls erstes gebraucht und muss
+    // fuer aller weiteren zur verfuegung stehen (z.B. anhaengen
+    // von neuen Kontakten)
+    contactValue = new QMap <int, QStringList>;
+
+}
+
+void MainWindow::saveContactData()
+{
+    // vorteil der sich aus dieser Aktion ergibt, ist das wenn der Nutzer
+    // einen neuen Kontakt anlegen will nach dem neuen brauch er nicht
+    // alles loeschen, da er vielleich die selben daten noch einmal braucht
+    // solle man leiber eine abfrage machen, alles loeschen oder Daten
+    // beibehalten
+
+    // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
+    int countExistingContacs = NULL;
+    countExistingContacs =  contactValue->count();
+    qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
+
+    // Initialiesieren und befuellen der QStringList
+    // mit den Eingegebenen Werten
+    QStringList contactList;
+    contactList.clear();
+
+    for (int i = 0; i < 25; i++)
+    {
+        contactList.append(lines[i]->text());
+        qDebug() << "Liste add:" << lines[i]->text();
+    }
+
+    //contactList.append(ui->FeatureInfoTextEdit->);
+    // Uebergabe der QStringList an die QMap und zuweisen eines Key
+    contactValue->insert(countExistingContacs ,contactList);
+
+    QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
+}
+
 // right Mouse event //////////////////////////////////
 void MainWindow::showContextMenu()
 {
@@ -233,9 +278,9 @@ void MainWindow::abortContact()
 
 void MainWindow::newContact()
 {    
-    if (widget->isVisible())
+    if (listViewOpen->isVisibleQWidget())
     {
-        widget->close();
+        listViewOpen->closeQWidget();
     }
 
     //centralWidget();
@@ -362,40 +407,9 @@ void MainWindow::list()
 
     if (!widget->isVisible())
     {
-        // past die Tabelle an die Fenstergroesse an
-        //int x = width();
-        //int y = height();
-        // Parameter (x, y, width, heih);
-        //QRect rect(10, 20, (x - 20), (y - 20));
-
-        // erzeugen des Tabellen Kopfes
-        QStandardItemModel *model = new QStandardItemModel;
-        model->setHorizontalHeaderItem(0, new QStandardItem(QString("Anrede")));
-        model->setHorizontalHeaderItem(1, new QStandardItem(QString("Name")));
-        model->setHorizontalHeaderItem(2, new QStandardItem(QString("Vornamen")));
-
-        // Deklarieren und Incrementieren der Tabelle
-        QTableView *tableView = new QTableView(this);
-        // zuordnen des Tabellen Kopfes der QTableView
-        tableView->setModel(model);
-        //tableView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-        // Incrementierung des neuen Widget
-        widget = new QWidget;
-        // zuordnen der Tabele und Deklarieren und Incrementieren
-        // eines QVBoxLayout
-        QVBoxLayout *boxLayout = new QVBoxLayout;
-        boxLayout->addWidget(tableView);
-        widget->setLayout(boxLayout);
-        //widget->setGeometry(rect);
-        // dmit die Tabelle schön mit waechst wenn mann das Fenster
-        // vergroessert
-        widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        widget->setObjectName("widgetListView");
-
         // zuweisen des neuen QWidget dem layout vom centralWidget
-        ui->centralWidget->layout()->addWidget(widget);
-        //setCentralWidget(widget);
+        //ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget((QMap*) contactValue));
+        ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget());
     }
 
     // test /////////////////////////////////////////////
