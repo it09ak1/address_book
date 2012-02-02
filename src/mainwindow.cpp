@@ -2,6 +2,7 @@
 #include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+//#include "contactmap.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     fillQMap();
 
     listViewOpen = new listView;
+    //conMap = new ContactMap;
 
 }
 
@@ -61,33 +63,44 @@ void MainWindow::fillQMap()
 
 void MainWindow::saveContactData()
 {
-    // vorteil der sich aus dieser Aktion ergibt, ist das wenn der Nutzer
-    // einen neuen Kontakt anlegen will nach dem neuen brauch er nicht
-    // alles loeschen, da er vielleich die selben daten noch einmal braucht
-    // solle man leiber eine abfrage machen, alles loeschen oder Daten
-    // beibehalten
-
-    // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
-    int countExistingContacs = NULL;
-    countExistingContacs =  contactValue->count();
-    qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
-
-    // Initialiesieren und befuellen der QStringList
-    // mit den Eingegebenen Werten
-    QStringList contactList;
-    contactList.clear();
-
-    for (int i = 0; i < 25; i++)
+    // Nach schauen ob es Werte in den Feldern: Anrede, Vorname und Nachname gibt
+    // sonst informiere den Nutzer das diese Felder nicht leer sein duerfen
+    if ((lines[0]->text() != "") && (lines[1]->text() != "") && (lines[2]->text() != ""))
     {
-        contactList.append(lines[i]->text());
-        qDebug() << "Liste add:" << lines[i]->text();
+        // vorteil der sich aus dieser Aktion ergibt, ist das wenn der Nutzer
+        // einen neuen Kontakt anlegen will nach dem neuen brauch er nicht
+        // alles loeschen, da er vielleich die selben daten noch einmal braucht
+        // solle man leiber eine abfrage machen, alles loeschen oder Daten
+        // beibehalten
+
+        // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
+        int countExistingContacs = NULL;
+        countExistingContacs =  contactValue->count();
+        //qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
+        //QUuid uid = new QUuid;
+        //uid.createUuid();
+
+        // Initialiesieren und befuellen der QStringList mit den Eingegebenen Werten
+        QStringList contactList;
+        contactList.clear();
+
+        for (int i = 0; i < 25; i++)
+        {
+            contactList.append(lines[i]->text());
+            //qDebug() << "Liste add:" << lines[i]->text();
+        }
+
+        // hinzufuegen des Textes aus den Zusatzsinformationen Tab (FeatureInfoTextEdit)
+        contactList.append(ui->FeatureInfoTextEdit->toPlainText());
+        // Uebergabe der QStringList an die QMap und zuweisen eines Key
+        contactValue->insert(countExistingContacs ,contactList);
+
+        QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
     }
-
-    //contactList.append(ui->FeatureInfoTextEdit->);
-    // Uebergabe der QStringList an die QMap und zuweisen eines Key
-    contactValue->insert(countExistingContacs ,contactList);
-
-    QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
+    else
+    {
+        QMessageBox::about(this, "Keine Eingaben", "Die Felder Anrede, Vorname und Nachname dürfen nicht leer sein.");
+    }
 }
 
 // right Mouse event //////////////////////////////////
@@ -409,7 +422,7 @@ void MainWindow::list()
     {
         // zuweisen des neuen QWidget dem layout vom centralWidget
         //ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget((QMap*) contactValue));
-        ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget());
+        ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget(contactValue));
     }
 
     // test /////////////////////////////////////////////

@@ -10,14 +10,14 @@ class listView
 public:
     listView();
     //QWidget* showQWidget(QMap* saveValue);
-    QWidget* showQWidget();
+    QWidget* showQWidget(QMap <int, QStringList>* list);
     void closeQWidget();
     bool isVisibleQWidget();
 
 private:
     void createTable();
     void createTableHeader();
-    void createTableRowValues();
+    void createTableRowValues(QMap <int, QStringList>* listForwarding);
     //QTableView *tableView;
     QTableWidget *tableAddressData;
     QWidget *tableQWidget;

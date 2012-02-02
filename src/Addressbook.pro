@@ -15,13 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     addinExport.cpp \
-    listView.cpp
+    listView.cpp \
+    contactmap.cpp
 
 HEADERS  += mainwindow.h \
     addinExport.h \
-    listView.h
+    listView.h \
+    contactmap.h
 
 FORMS    += mainwindow.ui
+
+
 
 
 

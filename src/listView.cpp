@@ -1,4 +1,5 @@
 #include "listView.h"
+#include "contactmap.h"
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QtGui>
@@ -71,25 +72,58 @@ void listView::createTableHeader()
 }
 
 // hier werden die Wert eingelesen um die Zeilen der liste zu fuellen
-void listView::createTableRowValues()
+void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
 {
-    // Zaehlen wie vielle spalten gebracht werden
+    // Daklarieren des QTableWidgetItem um die Tabelle dann mit
+    // Werten zu fuellen
+    QTableWidgetItem *singelContactValue;
+    //QMap<int, QStringList> *list = conMap->getMap() ;
+    //Ermitteln wie vielle Spalten gebracht werden
+    int countValues = listForwarding->count();
+    qDebug() << "Anzahl der Werte: " << countValues;
 
-    // setzten wie vielle Zeilen gebraucht Werden
-    tableAddressData->setRowCount(1);
+    // setzten des Wertes, wie vielle Zeilen gebraucht Werden in der QTable
+    tableAddressData->setRowCount(countValues);
+
+    // schleife zum fuellen der der QTabel
+    for (int i = 0; i < countValues; i++)
+    {
+        // setzend der Werte
+        //QStringList contactOfQMap = listForwarding->values(i);
+        QStringList listContacts = listForwarding->value(i);
+        //QList<QStringList> contactOfQMap = listForwarding->values(i);
+        int countValuesFromQStringList = listContacts.count();
+
+        for (int j = 0; j < countValuesFromQStringList; j++)
+        {
+            // hollen des Einzelnen Wertes
+            QString singelValue = listContacts.at(j);
+            singelContactValue = new QTableWidgetItem;
+            singelContactValue->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+            singelContactValue->setText(singelValue);
+
+            // hinzufuefgen des QTableWidgetItem der QTableWidget
+            tableAddressData->setItem(i, j, singelContactValue);
+        }
+
+    }
 
     // setItem(row, col, value)
-    tableAddressData->setItem(0, 0, new QTableWidgetItem("Herr"));
-    tableAddressData->setItem(0, 1, new QTableWidgetItem("Andre"));
-    tableAddressData->setItem(0, 2, new QTableWidgetItem("Kieﬂlich"));
+//    QTableWidgetItem *test = new QTableWidgetItem;
+//    test->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+//    test->setText("Herr");
+
+//    tableAddressData->setItem(0, 0, test);
+//    tableAddressData->setItem(0, 1, new QTableWidgetItem("Andre"));
+//    tableAddressData->setItem(0, 2, new QTableWidgetItem("Kieﬂlich"));
 }
 
 // schaltet mir die Listenansicht sichtbar
 //QWidget* listView::showQWidget(QMap* saveValue)
-QWidget* listView::showQWidget()
+QWidget* listView::showQWidget(QMap<int, QStringList> *list)
 {
     // setzen der Zeilen Werte
-    createTableRowValues();
+    createTableRowValues(list);
 
     tableQWidget->show();
     return tableQWidget;

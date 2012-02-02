@@ -15,6 +15,7 @@ class QMenu;
 // Klasse bekannt machen
 class AddinExport;
 class listView;
+//class ContactMap;
 
 class MainWindow : public QMainWindow
 {
@@ -115,6 +116,8 @@ private:
 
     QWidget *widget;
     QWidget *cloneWidget;
+
+    //ContactMap *conMap;
 };
 
 
