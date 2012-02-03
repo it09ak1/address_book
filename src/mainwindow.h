@@ -37,7 +37,6 @@ private slots:
     // FileMenu
     void newContact();
 
-
     void importXML();
 //    void importExcel();
     void exportXML();
@@ -58,8 +57,11 @@ private slots:
     void iGotTheFocusCut();
     void iGotTheFocusCopy();
 
-    // Buttons
+    // loeschen der Eintraege aus dem Kontaktformular beim Klick auf: Abbrechen
     void abortContact();
+    // loeschen der Eintraege aus dem Kontaktformular beim Klick auf:
+    void deleteNewContact();
+    // neuer Kontakt (mit leeren Dokument)
     // Speichern Button vom Fenster "Neu Kontakt"
     void saveContactData();
 
@@ -73,6 +75,8 @@ private:
     void rightMouseMenuNewContact();
     // zum befuellen der QMap aus der TXT
     void fillQMap();
+    // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
+    void createMessagBox();
 
     // Menus
     QMenu *fileMenu;
@@ -106,7 +110,7 @@ private:
 
     // Buttons
     QPushButton *buttonSave;
-
+    QPushButton *buttonDelete;
     QPushButton *buttonAbort;
 
     QLineEdit *lines[25];

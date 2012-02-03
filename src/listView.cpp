@@ -1,12 +1,61 @@
 #include "listView.h"
-#include "contactmap.h"
+#include "ui_mainwindow.h"
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QtGui>
 
-listView::listView()
+listView::listView(QWidget *parent) : QWidget(parent)
 {
     createTable();
+    createActions();
+}
+
+// erstellen der Rechten Maus Menues
+// muss noch schick gemacht werden da es bis jetzt auf beide maus Actions reagiert
+///////////////////////////////////////////////////////////////////////////////////
+void listView::showMouseMenu(const int x, const int y)
+{
+    // Ausgebe auf Konsole ///////////////////////////////
+    qDebug() << "so in der funktion von der Maus bin ich und Sie habe auf dei Spalte: " << x << " in der Zeile: " << y <<
+                " geklickt.";
+    // Ausgebe auf Konsole ///////////////////////////////
+
+        rightMouseMenu = new QMenu(this);
+        orderBy = rightMouseMenu->addMenu("Sortieren");
+        orderBy->addAction(ascending);
+        orderBy->addAction(descending);
+        saveTo = rightMouseMenu->addMenu(tr("Exportieren..."));
+        saveTo->addAction(exportToXML);
+        saveTo->addAction(exportToExcel);
+        rightMouseMenu->addAction(detailView);
+        rightMouseMenu->addAction(edit);
+        rightMouseMenu->addAction(deleteContact);
+        rightMouseMenu->exec(QCursor::pos());
+}
+
+// erstellen der Rechtem Maus Actionen
+void listView::createActions()
+{
+    // Untermenue Punkte (orderby)
+    ascending = new QAction("Aufsteigend", this);
+    ascending->setStatusTip(tr("Liste wir von A nach Z sortiert."));
+    descending = new QAction("Absteigend", this);
+    descending->setStatusTip(tr("Liste wird von Z nach A Sortiert"));
+
+    // Untermenue Punkte (saveTo)
+    exportToXML = new QAction("... nach XML", this);
+    exportToExcel = new QAction("... nach Excel", this);
+
+    detailView = new QAction("Detailansicht", this);
+    detailView->setStatusTip("Anschauen der Kontaktdaten in einer anderen Sicht.");
+
+    edit = new QAction("Bearbeiten", this);
+    edit->setShortcut(Qt::CTRL + Qt::Key_E);
+    edit->setStatusTip("Koriegieren falsch eingegebender Werte.");
+
+    deleteContact = new QAction("Lˆschen", this);
+    deleteContact->setShortcut(Qt::CTRL + Qt::Key_D);
+    deleteContact->setStatusTip("Entfernen eines kontaktes.");
 }
 
 // erstellen der Tabelle
@@ -21,23 +70,31 @@ void listView::createTable()
 
     // Incrementieren der Tabelle
     tableAddressData = new QTableWidget;
+    tableAddressData->setObjectName("listView");
     tableAddressData->setColumnCount(columnsHeader);
-    //tableAddressData->setRowCount(1);
     // zuordnen des Tabellen Kopfes der QTableView
     // setHorizontalHeaderLabels nimmt nur const werte entgegen
     tableAddressData->setHorizontalHeaderLabels(headerHItems);
+    tableAddressData->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     // Incrementierung des neuen Widget
-    tableQWidget = new QWidget;
     // zuordnen der Tabele dem QVBoxLayout und Incrementieren
     boxLayout = new QVBoxLayout;
     boxLayout->addWidget(tableAddressData);
-    tableQWidget->setLayout(boxLayout);
-    //widget->setGeometry(rect);
+    this->setLayout(boxLayout);
     // dmit die Tabelle schˆn mit waechst wenn mann das Fenster
     // vergroessert
-    tableQWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    tableQWidget->setObjectName("widgetListView");
+    this->setContextMenuPolicy(Qt::ActionsContextMenu);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setObjectName("widgetListView");
+
+    //QObject::connect(tableAddressData, SIGNAL(cellClicked(int,int)), tableAddressData, SLOT());
+    // zum Anzeigen des Mause Menues in der Spalte
+    // warum wurde nicht das SIGNAL(customContextMenuRequested(QPoint)), da das Menue nur erscheinen
+    // soll wenn auf eine Zelle gecklickt wurde und es auch notwendig ist zu wissen fuer die
+    // weiteren Funktionen wie: Sortieren, Bearbeiten ... in welcher Zelle sich der
+    // nutzer befindet
+    connect(tableAddressData, SIGNAL(cellClicked(int,int)), this, SLOT(showMouseMenu(int,int)));
 }
 
 void listView::createTableHeader()
@@ -77,7 +134,6 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
     // Daklarieren des QTableWidgetItem um die Tabelle dann mit
     // Werten zu fuellen
     QTableWidgetItem *singelContactValue;
-    //QMap<int, QStringList> *list = conMap->getMap() ;
     //Ermitteln wie vielle Spalten gebracht werden
     int countValues = listForwarding->count();
     qDebug() << "Anzahl der Werte: " << countValues;
@@ -88,10 +144,9 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
     // schleife zum fuellen der der QTabel
     for (int i = 0; i < countValues; i++)
     {
-        // setzend der Werte
-        //QStringList contactOfQMap = listForwarding->values(i);
+        // hollen der Werte aus der QStringList: listForwarding
+        // um sie dann einzeln in die Spalten zu schreiben
         QStringList listContacts = listForwarding->value(i);
-        //QList<QStringList> contactOfQMap = listForwarding->values(i);
         int countValuesFromQStringList = listContacts.count();
 
         for (int j = 0; j < countValuesFromQStringList; j++)
@@ -99,40 +154,31 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
             // hollen des Einzelnen Wertes
             QString singelValue = listContacts.at(j);
             singelContactValue = new QTableWidgetItem;
+            // setzten das man die Werte in der Spalte nur anschauen kann
+            // und wenn man mit der Maus drauf klickt das sie hervorgehoben werden
             singelContactValue->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             singelContactValue->setText(singelValue);
 
             // hinzufuefgen des QTableWidgetItem der QTableWidget
             tableAddressData->setItem(i, j, singelContactValue);
         }
-
     }
-
-    // setItem(row, col, value)
-//    QTableWidgetItem *test = new QTableWidgetItem;
-//    test->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-//    test->setText("Herr");
-
-//    tableAddressData->setItem(0, 0, test);
-//    tableAddressData->setItem(0, 1, new QTableWidgetItem("Andre"));
-//    tableAddressData->setItem(0, 2, new QTableWidgetItem("Kieﬂlich"));
 }
 
 // schaltet mir die Listenansicht sichtbar
-//QWidget* listView::showQWidget(QMap* saveValue)
 QWidget* listView::showQWidget(QMap<int, QStringList> *list)
 {
-    // setzen der Zeilen Werte
+    // neu erstellen der Zeilen in der Tabelle und zeigen
     createTableRowValues(list);
-
-    tableQWidget->show();
-    return tableQWidget;
+    this->show();
+    return this;
 }
 
 // schliesst mir die Listenansicht
 void listView::closeQWidget()
 {
-    tableQWidget->close();
+    //tableQWidget->close();
+    this->close();
 }
 
 // nachfragen ob das Fenster sichtbar ist, wenn z.B. auf Kontakt
@@ -141,7 +187,8 @@ void listView::closeQWidget()
 // sonst nicht
 bool listView::isVisibleQWidget()
 {
-    if (tableQWidget->isVisible())
+    //if (tableQWidget->isVisible())
+    if (this->isVisible())
     {
         return true;
     }
