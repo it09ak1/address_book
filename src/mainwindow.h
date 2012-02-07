@@ -41,7 +41,7 @@ private slots:
 //    void importExcel();
     void exportXML();
 //    void exportExcel();
-
+    void printMessages(int e);
 
     void exit();
 
@@ -110,7 +110,7 @@ private:
 
     QLineEdit *lines[25];
 
-    AddinExport *addExport;
+    AddinExport *exportTo;
     listView *listViewOpen;
 
     QWidget *widget;

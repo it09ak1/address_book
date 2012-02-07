@@ -61,33 +61,47 @@ void MainWindow::fillQMap()
 
 void MainWindow::saveContactData()
 {
-    // vorteil der sich aus dieser Aktion ergibt, ist das wenn der Nutzer
-    // einen neuen Kontakt anlegen will nach dem neuen brauch er nicht
-    // alles loeschen, da er vielleich die selben daten noch einmal braucht
-    // solle man leiber eine abfrage machen, alles loeschen oder Daten
+    // Vorteil der sich aus dieser Aktion ergibt ist, dass wenn der Nutzer
+    // einen neuen Kontakt anlegen will, nachdem neuen brauch er nicht
+    // alles löschen, da er vielleich die selben Daten noch einmal braucht
+    // solle man lieber eine Abfrage machen, alles löschen oder Daten
     // beibehalten
 
-    // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
-    int countExistingContacs = NULL;
-    countExistingContacs =  contactValue->count();
-    qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
+    if (lines[1]->text()!="" && lines[2]->text()!="") {
+        // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
+        int countExistingContacs = NULL;
+        countExistingContacs =  this->contactValue->count();
+        qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
 
-    // Initialiesieren und befuellen der QStringList
-    // mit den Eingegebenen Werten
-    QStringList contactList;
-    contactList.clear();
+        // Initialisieren und Befüllen der QStringList
+        // mit den Eingegebenen Werten
+        QStringList contactList;
+        contactList.clear();
 
-    for (int i = 0; i < 25; i++)
-    {
-        contactList.append(lines[i]->text());
-        qDebug() << "Liste add:" << lines[i]->text();
+        for (int i = 0; i < 25; i++)
+        {
+            contactList.append(this->lines[i]->text());
+            qDebug() << "Liste add:" << this->lines[i]->text();
+        }
+
+        //contactList.append(ui->FeatureInfoTextEdit->);
+        // Uebergabe der QStringList an die QMap und zuweisen eines Key
+        contactValue->insert(countExistingContacs ,contactList);
+
+        QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
+
+        /*
+        ** Übergabe an die addinExport-Klasse zum speichern in einer CSV mit "|" Delimiter
+        */
+        exportTo = new AddinExport(contactList, 2);
+    }
+    else {
+        // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
+        printMessages (1);
     }
 
-    //contactList.append(ui->FeatureInfoTextEdit->);
-    // Uebergabe der QStringList an die QMap und zuweisen eines Key
-    contactValue->insert(countExistingContacs ,contactList);
 
-    QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
+
 }
 
 // right Mouse event //////////////////////////////////
@@ -101,10 +115,6 @@ void MainWindow::showContextMenu()
     menu2->exec(QCursor::pos());
 }
 
-//QLineEdit *MainWindow::returnLines()
-//{
-//    return *this->lines;
-//}
 QStringList MainWindow::returnLines ()
 {
     QStringList fList;
@@ -277,7 +287,7 @@ void MainWindow::abortContact()
 }
 
 void MainWindow::newContact()
-{    
+{
     if (listViewOpen->isVisibleQWidget())
     {
         listViewOpen->closeQWidget();
@@ -309,15 +319,33 @@ void MainWindow::exportXML() {
     ** Es wird geprüft ob die notwendigen Felder gefüllt ist
     */
     if (lines[1]->text()!="" && lines[2]->text()!="")
-        addExport = new AddinExport(returnLines(),1);
+        exportTo = new AddinExport(returnLines(),1);
     else {
-        //qDebug() << "Vor- und Nachname leer";
-
         // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
-        QMessageBox::about(this,"Es wurde ein Fehler registriert","Bitte geben sie mindestens einen Vor- und Nachnamen ein");
+        printMessages (1);
     }
 
 }
+
+/*
+** Die Errorklasse kann eine Fehlerausgabe produzieren, wenn der Benutzer
+** auf etwas hingewiesen werden soll.
+** Der Fehlertyp wird als Parameter übergeben.
+*/
+void MainWindow::printMessages(int e){
+    switch (e) {
+        case 1: {
+            QMessageBox::about(this,"Es wurde ein Fehler registriert","Bitte geben sie mindestens einen Vor- und Nachnamen ein");
+            break;
+        }
+        case 2: {
+            QMessageBox::about(this,"Dies ist keine zulässige Aktion","");
+            break;
+        }
+    }
+
+}
+
 //void MainWindow::exportExcelAct() {
 
 

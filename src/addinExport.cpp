@@ -6,6 +6,8 @@
 #include <QtXml/qdom.h>
 #include <qtextstream.h>
 #include <qstring.h>
+#include <time.h>
+#include <cstring>
 
 
 AddinExport::AddinExport(QStringList sList, int action) {
@@ -18,11 +20,19 @@ AddinExport::AddinExport(QStringList sList, int action) {
     */
     switch (action)
     {
-    /* Alle Feldelemente werden über das Linesfeld im XML-Format in  eine
-     * Datei geschrieben
-     */
-    case 1: this->exportToXML();
-    case 2: this->exportToCSV();
+        /* Alle Feldelemente werden über das Linesfeld im XML-Format in  eine
+         * Datei geschrieben
+         */
+        case 1: {
+            this->exportToXML();
+            // führe keinen weiteren Case aus
+            break;
+        }
+        case 2: {
+            this->exportToCSV();
+            // führe keinen weiteren Case aus
+            break;
+        }
     }
 
 
@@ -48,11 +58,12 @@ void AddinExport::exportToXML() {
     */
     root.appendChild(ContactToNode (xdoc) );
 
-
     // wandelt das Dom Dokument in einen QString um
     QString outData = xdoc.toString();
 
-    writeFile(outData, 1);
+    // Übergebe outData zum Schreiben in die entsprechende Datei an die
+    // Schreibmethode writeFile
+    this->writeFile(outData, 1);
 
 
 }
@@ -63,6 +74,10 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
 
     // personal data /////////////////////////////////
     //////////////////////////////////////////////////
+    /*
+    ** Erzeugt zuerst einen Tag (Elementname) und hängt dann den entsprechenden
+    ** Wert als Textknoten mit dem inhalt aus der exportList an.
+    */
     tag = xdoc.createElement("Title");
     tag.appendChild(xdoc.createTextNode(this->exportList.at(0)));
     cNode.appendChild(tag);
@@ -132,7 +147,18 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
 
 void AddinExport::exportToCSV()
 {
+    QString output="";
 
+    /* Durch die QStringList ist das zusammenführen des Datensatzes sehr einfach.
+    ** Füge einfach alle Datensätze des Formulars getrennt durch eine Pipe="|"
+    ** zusammen und übergebe diesen langen String an die Ausgabemethode.
+    */
+    output=exportList.join ("|");
+
+    this->writeFile (output, 2);
+    // !!! Achtung!!! es fehlt an dieser Stelle noch die passende Implementierung
+    // in der Ausgabemethode!!! Bisher wird nur als xml gespeihert!!!
+    //
 }
 
 void AddinExport::writeFile(QString outData, int fileType)
@@ -143,8 +169,31 @@ void AddinExport::writeFile(QString outData, int fileType)
      *
      * hier <soll> als Dateiparameter Nachname_Vorname_RND.csv sein
      */
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
-        tr("XML File (*.xml)"));
+    QString fileName;
+    char *cFileName = new char[200];
+    switch (fileType){
+        case 1: {
+        fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+            tr("XML File (*.xml)"));
+            break;
+        }
+        case 2: {
+            strcpy (cFileName, exportList.at (2).toWCharArray ());
+            strcat(cFileName, "_");
+            strcat (cFileName, exportList.at (3).toAscii ());
+            srand( (unsigned)time( NULL ) );
+            char *t = (char *) rand();
+            strcat (cFileName, t);
+            strcat (cFileName, ".csv");
+
+            puts(cFileName);
+
+            fileName = cFileName;
+            break;
+        }
+    }
+
+
 
     if (fileName != "") {
         QFile file(fileName);
