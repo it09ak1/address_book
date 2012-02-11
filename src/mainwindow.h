@@ -28,10 +28,8 @@ public:
     //QLineEdit *returnLines(); // Objekt vom type returnLines
     QStringList returnLines ();
     QMap<int, QStringList> *contactValue;
-
-    // rigth mouse click Menu ??
-//protected:
-    //void contextMenuEvent(QContextMenuEvent *event);
+    static void setDeleteValue(int key);
+    //static int getDeleteValue();
 
 private slots:
     // FileMenu
@@ -77,6 +75,8 @@ private:
     void fillQMap();
     // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
     void createMessagBox();
+
+    void deleteQMapValue();
 
     // Menus
     QMenu *fileMenu;

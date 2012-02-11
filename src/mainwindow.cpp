@@ -29,11 +29,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->buttonBox->addButton(buttonDelete, QDialogButtonBox::ActionRole);
     ui->buttonBox->addButton(buttonAbort, QDialogButtonBox::ActionRole);
 
-    //QPushButton *buttonSave = new QPushButton("Speichern");
-
-    //QToolBar *neuKontakt = new QToolBar(this);
-    //neuKontakt->addWidget(buttonSave);
-
     createActions();
     createMenus();
     initLineEdit();
@@ -79,8 +74,6 @@ void MainWindow::saveContactData()
         int countExistingContacs = NULL;
         countExistingContacs =  contactValue->count();
         //qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
-        //QUuid uid = new QUuid;
-        //uid.createUuid();
 
         // Initialiesieren und befuellen der QStringList mit den Eingegebenen Werten
         QStringList contactList;
@@ -97,7 +90,6 @@ void MainWindow::saveContactData()
         // zuweisen eines Key und Uebergabe der QStringList an die QMap
         contactValue->insert(countExistingContacs ,contactList);
 
-        //QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
         // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
         createMessagBox();
     }
@@ -337,6 +329,7 @@ void MainWindow::newContact()
     if (listViewOpen->isVisibleQWidget())
     {
         listViewOpen->closeQWidget();
+        listViewOpen->closeQToolBar();
     }
 
     //centralWidget();
@@ -460,5 +453,35 @@ void MainWindow::list()
         // zuweisen des neuen QWidget dem layout vom centralWidget
         //ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget((QMap*) contactValue));
         ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget(contactValue));
+        this->addToolBar(listViewOpen->showQToolBar());
+        listViewOpen->showMeQToolBar();
     }
+}
+
+// loeschen des Wetes aus der QMap
+void MainWindow::deleteQMapValue()
+{
+    //int key2 = contactValue->key();
+//    QMap<int, QStringList>::iterator i = contactValue->begin();
+
+//    while (i != contactValue->end())
+//    {
+//        QMap<int, QStringList>::iterator prev = i;
+//        if (prev.key() == key)
+//        {
+//            contactValue->erase(i);
+//        }
+//        else
+//        {
+//            i++;
+//        }
+//    }
+    //contactValue->remove(getDeleteValue());
+}
+
+void MainWindow::setDeleteValue(int key)
+{
+    int keyDelete = key;
+    //contactValue->count();
+    qDebug() << "so hier bin ich doch wie lösche ich jetzt.";
 }
