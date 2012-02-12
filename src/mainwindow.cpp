@@ -3,6 +3,7 @@
 #include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+//#include "contactmap.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
@@ -18,20 +19,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->widgetNeuKontakt->close();
 
     buttonSave = new QPushButton("Speichern");
+    buttonDelete = new QPushButton("Löschen");
     buttonAbort = new QPushButton("Abbrenchen");
+    connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveContactData()));
+    connect(buttonDelete, SIGNAL(clicked()), this, SLOT(deleteNewContact()));
     connect(buttonAbort, SIGNAL(clicked()), this, SLOT(abortContact()));
 
     ui->buttonBox->addButton(buttonSave, QDialogButtonBox::ActionRole);
-    connect(buttonSave, SIGNAL(clicked()), this, SLOT(saveContactData()));
-
     // warum hier nicht RejectRole??
+    ui->buttonBox->addButton(buttonDelete, QDialogButtonBox::ActionRole);
     ui->buttonBox->addButton(buttonAbort, QDialogButtonBox::ActionRole);
-
-
-    //QPushButton *buttonSave = new QPushButton("Speichern");
-
-    //QToolBar *neuKontakt = new QToolBar(this);
-    //neuKontakt->addWidget(buttonSave);
 
     createActions();
     createMenus();
@@ -61,6 +58,7 @@ void MainWindow::fillQMap()
 
 void MainWindow::saveContactData()
 {
+<<<<<<< HEAD
     // Vorteil der sich aus dieser Aktion ergibt ist, dass wenn der Nutzer
     // einen neuen Kontakt anlegen will, nachdem neuen brauch er nicht
     // alles löschen, da er vielleich die selben Daten noch einmal braucht
@@ -103,19 +101,96 @@ void MainWindow::saveContactData()
 
 
 
+=======
+    // Nach schauen ob es Werte in den Feldern: Anrede, Vorname und Nachname gibt
+    // sonst informiere den Nutzer das diese Felder nicht leer sein duerfen
+    if ((lines[0]->text() != "") && (lines[1]->text() != "") && (lines[2]->text() != ""))
+    {
+        // wenn diese Felder nicht leer sind, soll nach geschaut werden, ob der
+        // Eintrag nicht schon Existiert
+
+        // vorteil der sich aus dieser Aktion ergibt, ist das wenn der Nutzer
+        // einen neuen Kontakt anlegen will nach dem neuen brauch er nicht
+        // alles loeschen, da er vielleich die selben daten noch einmal braucht
+        // solle man leiber eine abfrage machen, alles loeschen oder Daten
+        // beibehalten
+
+        // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
+        int countExistingContacs = NULL;
+        countExistingContacs =  contactValue->count();
+        //qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
+
+        // Initialiesieren und befuellen der QStringList mit den Eingegebenen Werten
+        QStringList contactList;
+        contactList.clear();
+
+        for (int i = 0; i < 25; i++)
+        {
+            contactList.append(lines[i]->text());
+            //qDebug() << "Liste add:" << lines[i]->text();
+        }
+
+        // hinzufuegen des Textes aus den Zusatzsinformationen Tab (FeatureInfoTextEdit)
+        contactList.append(ui->FeatureInfoTextEdit->toPlainText());
+        // zuweisen eines Key und Uebergabe der QStringList an die QMap
+        contactValue->insert(countExistingContacs ,contactList);
+
+        // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
+        createMessagBox();
+    }
+    else
+    {
+        QMessageBox::about(this, "Keine Eingaben", "Die Felder Anrede, Vorname und Nachname dürfen nicht leer sein.");
+    }
+>>>>>>> 467f128c902c6254f14b589ac052769f9b2e0ce1
 }
 
 // right Mouse event //////////////////////////////////
 void MainWindow::showContextMenu()
 {
     QMenu *menu2 = new QMenu(this);
-    menu2->addAction(pasteAct);
-    menu2->addSeparator();
     menu2->addAction(cutAct);
     menu2->addAction(copyAct);
+    menu2->addSeparator();
+    menu2->addAction(pasteAct);
+    // Damit das Menue an den Punkt erscheint wo der Cursor ist
     menu2->exec(QCursor::pos());
 }
 
+<<<<<<< HEAD
+=======
+void MainWindow::createMessagBox()
+{
+    // Messagebox Buttons erstellen
+    QPushButton *newContactEmptyButton = new QPushButton;
+    newContactEmptyButton->setText("neuer Kontakt (mit leeren Dokument)");
+    newContactEmptyButton->setMinimumWidth(200);
+    connect(newContactEmptyButton, SIGNAL(clicked()), this, SLOT(deleteNewContact()));
+
+    QPushButton *newContactFillButton = new QPushButton;
+    newContactFillButton->setText("neuer Kontakt (Eintragungen Beibehalten)");
+    newContactFillButton->setMinimumWidth(225);
+
+    QPushButton *goToListView = new QPushButton;
+    goToListView->setText("zur Listenansicht");
+    goToListView->setMinimumWidth(100);
+    connect(goToListView, SIGNAL(clicked()), this, SLOT(list()));
+
+    // zusammenbauen der MessageBox
+    QMessageBox *messageBox = new QMessageBox;
+    messageBox->addButton(newContactEmptyButton, QMessageBox::ActionRole);
+    messageBox->addButton(newContactFillButton, QMessageBox::ActionRole);
+    messageBox->addButton(goToListView, QMessageBox::ActionRole);
+    messageBox->setText("Die Eingetragenen Daten wurden erfolgreich hinterlegt. Was möchten Sie als nächstes tun:");
+    messageBox->setWindowTitle("Wie weiter");
+    messageBox->show();
+}
+
+//QLineEdit *MainWindow::returnLines()
+//{
+//    return *this->lines;
+//}
+>>>>>>> 467f128c902c6254f14b589ac052769f9b2e0ce1
 QStringList MainWindow::returnLines ()
 {
     QStringList fList;
@@ -204,8 +279,13 @@ void MainWindow::createActions()
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
     connect(exportXMLAct, SIGNAL(triggered()), this, SLOT(exportXML()));
+<<<<<<< HEAD
     exportCSVAct = new QAction(tr("... nach CSV"), this);
     connect(exportCSVAct, SIGNAL(triggered()), this, SLOT(exportCSV()));
+=======
+
+    exportExcelAct = new QAction(tr("... nach Excel"), this);
+>>>>>>> 467f128c902c6254f14b589ac052769f9b2e0ce1
 
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
@@ -268,17 +348,29 @@ void MainWindow::createMenus()
 
 // QActions ////////////////////////////////////
 ////////////////////////////////////////////////
+void MainWindow::deleteNewContact()
+{
+    /*
+    // Lösche alle Felder
+    // Initialisiere mit ""
+    */
+    for (int i = 0; i < 25; i++)
+    {
+        //qDebug() << lines[i]->text();
+        lines[i]->setText("");
+    }
+    ui->FeatureInfoTextEdit->setText("");
+}
+
 void MainWindow::abortContact()
 {
-    // Schließe aktuellen Kontakt
+    // Schließe aktuellen Kontakt wenn auf Abrrechen gedrueckt wurde
     ui->widgetNeuKontakt->close();
 
     /*
     // Lösche alle Felder
     // Initialisiere mit ""
     */
-    //delete ui->widgetNeuKontakt;
-
     for (int i = 0; i < 25; i++)
     {
         //qDebug() << lines[i]->text();
@@ -292,6 +384,7 @@ void MainWindow::newContact()
     if (listViewOpen->isVisibleQWidget())
     {
         listViewOpen->closeQWidget();
+        listViewOpen->closeQToolBar();
     }
 
     //centralWidget();
@@ -303,18 +396,24 @@ void MainWindow::newContact()
     ui->widgetNeuKontakt->show();
 }
 
+<<<<<<< HEAD
 void MainWindow::importXML() {
     importFrom = new AddinImport();
     qDebug() << "importiere";
     importFrom->importFiles ();
 
+=======
+void MainWindow::importXML()
+{
+>>>>>>> 467f128c902c6254f14b589ac052769f9b2e0ce1
 
 }
 //void MainWindow::importExcelAct() {
 
 
 //}
-void MainWindow::exportXML() {
+void MainWindow::exportXML()
+{
     /*
     ** der übergebene erste Parameter ist ein Objekt von QStringList
     **      die QStringList beinhaltet alle Werte des lines pointers.
@@ -327,7 +426,6 @@ void MainWindow::exportXML() {
         // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
         printMessages (1);
     }
-
 }
 
 /*
@@ -430,18 +528,41 @@ void MainWindow::list()
         ui->widgetNeuKontakt->close();
     }
 
-    // zeige mir die Listenansicht
-    //listViewOpen = new listView;
-    // test /////////////////////////////////////////////
-    // setzen der Position wo das QVBoxLayout beginnen soll
-    // und die Dimension
-
+    // Aufrufen der Listenansicht
     if (!widget->isVisible())
     {
         // zuweisen des neuen QWidget dem layout vom centralWidget
         //ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget((QMap*) contactValue));
-        ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget());
+        ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget(contactValue));
+        this->addToolBar(listViewOpen->showQToolBar());
+        listViewOpen->showMeQToolBar();
     }
+}
 
-    // test /////////////////////////////////////////////
+// loeschen des Wetes aus der QMap
+void MainWindow::deleteQMapValue()
+{
+    //int key2 = contactValue->key();
+//    QMap<int, QStringList>::iterator i = contactValue->begin();
+
+//    while (i != contactValue->end())
+//    {
+//        QMap<int, QStringList>::iterator prev = i;
+//        if (prev.key() == key)
+//        {
+//            contactValue->erase(i);
+//        }
+//        else
+//        {
+//            i++;
+//        }
+//    }
+    //contactValue->remove(getDeleteValue());
+}
+
+void MainWindow::setDeleteValue(int key)
+{
+    int keyDelete = key;
+    //contactValue->count();
+    qDebug() << "so hier bin ich doch wie lösche ich jetzt.";
 }
