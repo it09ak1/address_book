@@ -1,4 +1,4 @@
-#include "AddinExport.h"
+#include "addinExport.h"
 #include "mainwindow.h"
 #include <QtGui>
 #include <QFile>
@@ -167,32 +167,44 @@ void AddinExport::writeFile(QString outData, int fileType)
      * Öffnen und schließen einer Datei. Hier wird das Dom Dokument eingefügt.
      * Dies geschieht über einen QTextStream
      *
-     * hier <soll> als Dateiparameter Nachname_Vorname_RND.csv sein
+     * hier wird als Dateiparameter Nachname_Vorname_RND.csv sein
      */
     QString fileName;
-    char *cFileName = new char[200];
-    switch (fileType){
+    int random = NULL;
+
+    switch (fileType){ // 1 ==> Speichern Dialog; 2 ==> Dateiname
         case 1: {
-        fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
-            tr("XML File (*.xml)"));
+            fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+                                                    tr("XML File (*.xml)"));
             break;
         }
         case 2: {
-            strcpy (cFileName, exportList.at (2).toWCharArray ());
-            strcat(cFileName, "_");
-            strcat (cFileName, exportList.at (3).toAscii ());
+            fileName = "";
+            fileName.append (exportList.at (1));
+            fileName.append ("_");
+            fileName.append (exportList.at (2));
+
+            /* Erzeuge eine Zufallszahl mit der srand() Methode
+            ** srand wird dabei "gesaltet" -> gefüttert mit der aktuellen Zeit
+            ** so kann ein Aufruf von random eine "bessere" Zufallszahl liefern.
+            ** Ohne salt: Zufallszahlen werden wieder in der gleichen Reihenfolge
+            ** erzeugt.
+            ** random()% 10000 +1 erzeugt eine Zufallszahl zw. 1 und 10000
+            */
             srand( (unsigned)time( NULL ) );
-            char *t = (char *) rand();
-            strcat (cFileName, t);
-            strcat (cFileName, ".csv");
+            random = rand()% 10000 + 1;
+            fileName.append ("_");
 
-            puts(cFileName);
+            //Füge die Zufallszahl als "echte" Zahl ein, sonst wird konvertiert
+            fileName.append (QString::number(random));
 
-            fileName = cFileName;
+            //Füge Dateiendung hinzu
+            fileName.append (".csv");
+
             break;
         }
     }
-
+    qDebug() << fileName;
 
 
     if (fileName != "") {

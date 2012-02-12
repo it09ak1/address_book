@@ -1,4 +1,5 @@
 #include "addinExport.h"
+#include "addinImport.h"
 #include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -39,7 +40,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     fillQMap();
 
     listViewOpen = new listView;
-
 }
 
 MainWindow::~MainWindow()
@@ -91,7 +91,8 @@ void MainWindow::saveContactData()
         QMessageBox::about(this,"Jetzt geht es los ...","... ihre daten werden in eine QMap hinterlegt");
 
         /*
-        ** Übergabe an die addinExport-Klasse zum speichern in einer CSV mit "|" Delimiter
+        ** Übergabe an die addinExport-Klasse zum speichern in einer CSV
+        ** mit "|" Delimiter
         */
         exportTo = new AddinExport(contactList, 2);
     }
@@ -198,13 +199,13 @@ void MainWindow::createActions()
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
-    importExcelAct = new QAction(tr("... von Excel"), this);
+    connect(importXMLAct, SIGNAL(triggered()), this, SLOT(importXML()));
+    importCSVAct = new QAction(tr("... von CSV"), this);
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
     connect(exportXMLAct, SIGNAL(triggered()), this, SLOT(exportXML()));
-
-    exportExcelAct = new QAction(tr("... nach Excel"), this);
-
+    exportCSVAct = new QAction(tr("... nach CSV"), this);
+    connect(exportCSVAct, SIGNAL(triggered()), this, SLOT(exportCSV()));
 
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
@@ -245,11 +246,11 @@ void MainWindow::createMenus()
     // add subMenu
     contactImport = fileMenu->addMenu(tr("Kontakt importieren"));
     contactImport->addAction(importXMLAct);
-    contactImport->addAction(importExcelAct);
+    contactImport->addAction(importCSVAct);
 
     contactExport = fileMenu->addMenu(tr("Kontakt exportieren"));
     contactExport->addAction(exportXMLAct);
-    contactExport->addAction(exportExcelAct);
+    contactExport->addAction(exportCSVAct);
 
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
@@ -303,7 +304,9 @@ void MainWindow::newContact()
 }
 
 void MainWindow::importXML() {
-
+    importFrom = new AddinImport();
+    qDebug() << "importiere";
+    importFrom->importFiles ();
 
 
 }
