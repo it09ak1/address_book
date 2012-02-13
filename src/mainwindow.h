@@ -14,6 +14,7 @@ class QActionGroup;
 class QMenu;
 // Klasse bekannt machen
 class AddinExport;
+class AddinImport;
 class listView;
 //class ContactMap;
 
@@ -36,10 +37,11 @@ private slots:
     void newContact();
 
     void importXML();
-//    void importExcel();
+    void importCSV();
     void exportXML();
-//    void exportExcel();
+    void exportCSV();
 
+    void printMessages(int e);
 
     void exit();
 
@@ -91,9 +93,9 @@ private:
     // File Menu Actions
     QAction *newContactAct;
     QAction *importXMLAct;
-    QAction *importExcelAct;
+    QAction *importCSVAct;
     QAction *exportXMLAct;
-    QAction *exportExcelAct;
+    QAction *exportCSVAct;
     QAction *exitAct;
     // View Menu Actions
     QAction *listAct;
@@ -115,7 +117,8 @@ private:
 
     QLineEdit *lines[25];
 
-    AddinExport *addExport;
+    AddinExport *exportTo;
+    AddinImport *importFrom;
     listView *listViewOpen;
 
     QWidget *widget;

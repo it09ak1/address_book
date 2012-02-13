@@ -1,4 +1,5 @@
 #include "addinExport.h"
+#include "addinImport.h"
 #include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -225,12 +226,14 @@ void MainWindow::createActions()
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
-    importExcelAct = new QAction(tr("... von Excel"), this);
+    connect(importXMLAct, SIGNAL(triggered()), this, SLOT(importXML()));
+    importCSVAct = new QAction(tr("... von CSV"), this);
+    connect(importCSVAct, SIGNAL(triggered()), this, SLOT(importCSV()));
 
     exportXMLAct = new QAction(tr("... nach XML"), this);
     connect(exportXMLAct, SIGNAL(triggered()), this, SLOT(exportXML()));
-
-    exportExcelAct = new QAction(tr("... nach Excel"), this);
+    exportCSVAct = new QAction(tr("... nach CSV"), this);
+    connect(exportCSVAct, SIGNAL(triggered()), this, SLOT(exportCSV()));
 
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
@@ -271,11 +274,11 @@ void MainWindow::createMenus()
     // add subMenu
     contactImport = fileMenu->addMenu(tr("Kontakt importieren"));
     contactImport->addAction(importXMLAct);
-    contactImport->addAction(importExcelAct);
+    contactImport->addAction(importCSVAct);
 
     contactExport = fileMenu->addMenu(tr("Kontakt exportieren"));
     contactExport->addAction(exportXMLAct);
-    contactExport->addAction(exportExcelAct);
+    contactExport->addAction(exportCSVAct);
 
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
@@ -325,7 +328,7 @@ void MainWindow::abortContact()
 }
 
 void MainWindow::newContact()
-{    
+{
     if (listViewOpen->isVisibleQWidget())
     {
         listViewOpen->closeQWidget();
@@ -341,14 +344,17 @@ void MainWindow::newContact()
     ui->widgetNeuKontakt->show();
 }
 
-void MainWindow::importXML()
-{
+void MainWindow::importXML() {
+
+    //TODO
 
 }
-//void MainWindow::importExcelAct() {
+void MainWindow::importCSV() {
 
-
-//}
+    importFrom = new AddinImport();
+    qDebug() << "importiere";
+    importFrom->importFiles ();
+}
 void MainWindow::exportXML()
 {
     /*
@@ -358,18 +364,31 @@ void MainWindow::exportXML()
     ** Es wird geprüft ob die notwendigen Felder gefüllt ist
     */
     if (lines[1]->text()!="" && lines[2]->text()!="")
-        addExport = new AddinExport(returnLines(),1);
+        exportTo = new AddinExport(returnLines(),1);
     else {
-        //qDebug() << "Vor- und Nachname leer";
-
         // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
-        QMessageBox::about(this,"Es wurde ein Fehler registriert","Bitte geben sie mindestens einen Vor- und Nachnamen ein");
+        printMessages (1);
     }
+
 }
-//void MainWindow::exportExcelAct() {
+/*
+** Die Errorklasse kann eine Fehlerausgabe produzieren, wenn der Benutzer
+** auf etwas hingewiesen werden soll.
+** Der Fehlertyp wird als Parameter übergeben.
+*/
+void MainWindow::printMessages(int e){
+    switch (e) {
+        case 1: {
+            QMessageBox::about(this,"Es wurde ein Fehler registriert","Bitte geben sie mindestens einen Vor- und Nachnamen ein");
+            break;
+        }
+        case 2: {
+            QMessageBox::about(this,"Dies ist keine zulässige Aktion","");
+            break;
+        }
+    }
 
-
-//}
+}
 
 void MainWindow::exit()
 {
