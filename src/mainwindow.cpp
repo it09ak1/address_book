@@ -60,7 +60,7 @@ void MainWindow::saveContactData()
 {
     // Nach schauen ob es Werte in den Feldern: Anrede, Vorname und Nachname gibt
     // sonst informiere den Nutzer das diese Felder nicht leer sein duerfen
-    if ((lines[0]->text() != "") && (lines[1]->text() != "") && (lines[2]->text() != ""))
+    if ((lines[1]->text() != "") && (lines[2]->text() != ""))
     {
         // wenn diese Felder nicht leer sind, soll nach geschaut werden, ob der
         // Eintrag nicht schon Existiert
@@ -93,10 +93,16 @@ void MainWindow::saveContactData()
 
         // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
         createMessagBox();
+
+        /*
+        ** Übergabe an die addinExport-Klasse zum speichern in einer CSV
+        ** mit "|" Delimiter
+        */
+        exportTo = new AddinExport(contactList, 2);
     }
-    else
-    {
-        QMessageBox::about(this, "Keine Eingaben", "Die Felder Anrede, Vorname und Nachname dürfen nicht leer sein.");
+    else {
+        // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
+        printMessages (1);
     }
 }
 
@@ -345,6 +351,11 @@ void MainWindow::newContact()
 }
 
 void MainWindow::importXML() {
+
+    //TODO
+
+}
+void MainWindow::exportCSV() {
 
     //TODO
 

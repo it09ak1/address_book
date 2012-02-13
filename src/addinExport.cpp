@@ -1,4 +1,4 @@
-#include "AddinExport.h"
+#include "addinExport.h"
 #include "mainwindow.h"
 #include <QtGui>
 #include <QFile>
@@ -6,6 +6,8 @@
 #include <QtXml/qdom.h>
 #include <qtextstream.h>
 #include <qstring.h>
+#include <time.h>
+#include <cstring>
 
 
 AddinExport::AddinExport(QStringList sList, int action) {
@@ -129,10 +131,20 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
     return cNode;
 }
 
-
 void AddinExport::exportToCSV()
 {
+    QString output="";
 
+    /* Durch die QStringList ist das zusammenführen des Datensatzes sehr einfach.
+    ** Füge einfach alle Datensätze des Formulars getrennt durch eine Pipe="|"
+    ** zusammen und übergebe diesen langen String an die Ausgabemethode.
+    */
+    output=exportList.join ("|");
+
+    this->writeFile (output, 2);
+    // !!! Achtung!!! es fehlt an dieser Stelle noch die passende Implementierung
+    // in der Ausgabemethode!!! Bisher wird nur als xml gespeihert!!!
+    //
 }
 
 void AddinExport::writeFile(QString outData, int fileType)
@@ -141,10 +153,45 @@ void AddinExport::writeFile(QString outData, int fileType)
      * Öffnen und schließen einer Datei. Hier wird das Dom Dokument eingefügt.
      * Dies geschieht über einen QTextStream
      *
-     * hier <soll> als Dateiparameter Nachname_Vorname_RND.csv sein
+     * hier wird als Dateiparameter Nachname_Vorname_RND.csv sein
      */
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
-        tr("XML File (*.xml)"));
+    QString fileName;
+    int random = NULL;
+
+    switch (fileType){ // 1 ==> Speichern Dialog; 2 ==> Dateiname
+        case 1: {
+            fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "",
+                                                    tr("XML File (*.xml)"));
+            break;
+        }
+        case 2: {
+            fileName = "";
+            fileName.append (exportList.at (1));
+            fileName.append ("_");
+            fileName.append (exportList.at (2));
+
+            /* Erzeuge eine Zufallszahl mit der srand() Methode
+            ** srand wird dabei "gesaltet" -> gefüttert mit der aktuellen Zeit
+            ** so kann ein Aufruf von random eine "bessere" Zufallszahl liefern.
+            ** Ohne salt: Zufallszahlen werden wieder in der gleichen Reihenfolge
+            ** erzeugt.
+            ** random()% 10000 +1 erzeugt eine Zufallszahl zw. 1 und 10000
+            */
+            srand( (unsigned)time( NULL ) );
+            random = rand()% 10000 + 1;
+            fileName.append ("_");
+
+            //Füge die Zufallszahl als "echte" Zahl ein, sonst wird konvertiert
+            fileName.append (QString::number(random));
+
+            //Füge Dateiendung hinzu
+            fileName.append (".csv");
+
+            break;
+        }
+    }
+    qDebug() << fileName;
+
 
     if (fileName != "") {
         QFile file(fileName);
@@ -163,3 +210,4 @@ void AddinExport::writeFile(QString outData, int fileType)
     }
 
 }
+
