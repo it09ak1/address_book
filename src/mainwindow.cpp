@@ -36,6 +36,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     rightMouseMenuNewContact();
     fillQMap();
 
+    importFrom = new AddinImport(this->contactValue, this->lines[25]);
+    qDebug() << "importiere";
+    importFrom->importFiles ();
+
     listViewOpen = new listView;
 }
 
@@ -208,10 +212,7 @@ void MainWindow::createMessagBoxcontactExist()
     messageBox->show();
 }
 
-//QLineEdit *MainWindow::returnLines()
-//{
-//    return *this->lines;
-//}
+
 QStringList MainWindow::returnLines ()
 {
     QStringList fList;
@@ -433,10 +434,11 @@ void MainWindow::exportCSV() {
 
 }
 void MainWindow::importCSV() {
+    QStringList importList = importFrom->importAsLines(returnLines());
+    for(int i=0; i<24; i++) {
+        lines[i]->setText(importList.at(i));
+    }
 
-    importFrom = new AddinImport(this->contactValue);
-    qDebug() << "importiere";
-    importFrom->importFiles ();
 }
 void MainWindow::exportXML()
 {
@@ -453,6 +455,8 @@ void MainWindow::exportXML()
         printMessages (1);
     }
 }
+
+
 /*
 ** Die Errorklasse kann eine Fehlerausgabe produzieren, wenn der Benutzer
 ** auf etwas hingewiesen werden soll.
