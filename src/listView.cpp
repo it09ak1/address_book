@@ -61,22 +61,8 @@ void listView::orderByDESC()
 // Loeschen
 void listView::deleteContactFormTable()
 {
-    qDebug() << "so in der funktion von der Maus bin ich und Sie habe auf dei Spalte: in der Zeile: geklickt.Ausgewählte Spalte: "
-             << tableAddressData->SelectColumns << " Ausgewählte Zeile: "
-             << tableAddressData->SelectRows;
-
-    QTableWidgetItem *id = tableAddressData->item(tableAddressData->currentRow(), 0);
-    const QString s = id->text();
-
-    //qDebug() << "Zeilen inhalt: " << id->text();
     int row = tableAddressData->currentRow();
     tableAddressData->removeRow(row);
-
-    // loschen der Zeile auch aus der QMap
-    // umwandeln des QTableWidgetItem Wertes in einen integer
-    //int column = s.toInt();
-    //MainWindow::setDeleteValue(column);
-    //mw->setDeleteValue(column);
 }
 
 // erstellen der Rechtem Maus Actionen
@@ -85,10 +71,12 @@ void listView::createActions()
     // Untermenue Punkte (orderby)
     ascending = new QAction("Aufsteigend", this);
     ascending->setStatusTip(tr("Liste wir von A nach Z sortiert."));
+    ascending->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/downArrow.png"));
     connect(ascending, SIGNAL(triggered()), this, SLOT(orderByASC()));
 
     descending = new QAction("Absteigend", this);
     descending->setStatusTip(tr("Liste wird von Z nach A Sortiert"));
+    descending->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/upArrow.png"));
     connect(descending, SIGNAL(triggered()), this, SLOT(orderByDESC()));
 
     // Untermenue Punkte (saveTo)
@@ -105,6 +93,7 @@ void listView::createActions()
     deleteContact = new QAction("Löschen", this);
     deleteContact->setShortcut(Qt::CTRL + Qt::Key_D);
     deleteContact->setStatusTip("Entfernen eines kontaktes.");
+    deleteContact->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/delete.png"));
     connect(deleteContact, SIGNAL(triggered()), this, SLOT(deleteContactFormTable()));
 }
 
@@ -127,9 +116,6 @@ void listView::createTable()
     tableAddressData->setHorizontalHeaderLabels(headerHItems);
     // damit das eigene Menue in der Tabelle erscheint (anders funktioniert es auch nicht)
     tableAddressData->setContextMenuPolicy(Qt::CustomContextMenu);
-    // setzen des ID menues auf nicht sichbar, da diese spalte nur
-    // fuer das Programm gebraucht wird
-    tableAddressData->setColumnHidden(0, true);
 
     // Incrementierung des neuen Widget
     // zuordnen der Tabele dem QVBoxLayout und Incrementieren
@@ -149,7 +135,6 @@ void listView::createTable()
 void listView::createTableHeader()
 {
     // erzeugen des Tabellen Kopfes (Spalten)
-    headerHItems.append("ID");
     headerHItems.append("Anrede");
     headerHItems.append("Vorname");
     headerHItems.append("Nachname");
@@ -184,7 +169,6 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
     // Daklarieren des QTableWidgetItem um die Tabelle dann mit
     // Werten zu fuellen
     QTableWidgetItem *singelContactValue;
-    QTableWidgetItem *idContavtValue;
     //Ermitteln wie vielle Spalten gebracht werden
     int countValues = listForwarding->count();
     qDebug() << "Anzahl der Werte: " << countValues;
@@ -200,15 +184,6 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
         QStringList listContacts = listForwarding->value(i);
         int countValuesFromQStringList = listContacts.count();
 
-        // setzen der ID Spalte
-        // umwadeln des Integers in einen String
-        QString s;
-        s.setNum(i);
-        idContavtValue = new QTableWidgetItem;
-        idContavtValue->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        idContavtValue->setText(s);
-        tableAddressData->setItem(i, 0, idContavtValue);
-
         // setzen der Kontakt werte
         for (int j = 0; j < countValuesFromQStringList; j++)
         {
@@ -221,7 +196,7 @@ void listView::createTableRowValues(QMap<int, QStringList> *listForwarding)
             singelContactValue->setText(singelValue);
 
             // hinzufuefgen des QTableWidgetItem der QTableWidget
-            tableAddressData->setItem(i, (j + 1), singelContactValue);
+            tableAddressData->setItem(i, j, singelContactValue);
         }
     }
 }

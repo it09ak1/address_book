@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>Adress Buch</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/addressbook.png</normaloff>../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/addressbook.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>

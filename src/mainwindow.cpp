@@ -58,10 +58,14 @@ void MainWindow::fillQMap()
 
 void MainWindow::saveContactData()
 {
-    // Nach schauen ob es Werte in den Feldern: Anrede, Vorname und Nachname gibt
+    // Nach schauen ob es Werte in den Feldern: Vorname und Nachname gibt
     // sonst informiere den Nutzer das diese Felder nicht leer sein duerfen
     if ((lines[1]->text() != "") && (lines[2]->text() != ""))
     {
+        // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
+        int countExistingContacs = NULL;
+        countExistingContacs =  contactValue->count();
+
         // wenn diese Felder nicht leer sind, soll nach geschaut werden, ob der
         // Eintrag nicht schon Existiert
 
@@ -71,39 +75,78 @@ void MainWindow::saveContactData()
         // solle man leiber eine abfrage machen, alles loeschen oder Daten
         // beibehalten
 
-        // Variabel zum Zaehlen der schon vorhandenen Eintaege in der QMap
-        int countExistingContacs = NULL;
-        countExistingContacs =  contactValue->count();
-        //qDebug() << "Anzahl der Eintraege: " << countExistingContacs;
-
-        // Initialiesieren und befuellen der QStringList mit den Eingegebenen Werten
-        QStringList contactList;
-        contactList.clear();
-
-        for (int i = 0; i < 25; i++)
+        // nach schaen ob die QMap noch leer ist und ueberpruefen ob der Vorname und Name
+        // nicht schon vorhanden ist in der Liste
+        // gibt dann einen boolen wert zurück
+        if (!contactExist(countExistingContacs))
         {
-            contactList.append(lines[i]->text());
-            //qDebug() << "Liste add:" << lines[i]->text();
+            insertInQMap();
         }
-
-        // hinzufuegen des Textes aus den Zusatzsinformationen Tab (FeatureInfoTextEdit)
-        contactList.append(ui->FeatureInfoTextEdit->toPlainText());
-        // zuweisen eines Key und Uebergabe der QStringList an die QMap
-        contactValue->insert(countExistingContacs ,contactList);
-
-        // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
-        createMessagBox();
-
-        /*
-        ** Übergabe an die addinExport-Klasse zum speichern in einer CSV
-        ** mit "|" Delimiter
-        */
-        exportTo = new AddinExport(contactList, 2);
+        else
+        {
+            // Benutzer bekommt eine Nachricht das der Eintrag schon in der liste Vorhanden ist
+            createMessagBoxcontactExist();
+        }
     }
     else {
         // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
         printMessages (1);
     }
+}
+
+void MainWindow::insertInQMap()
+{
+    // Initialiesieren und befuellen der QStringList mit den Eingegebenen Werten
+    QStringList contactList;
+    contactList.clear();
+
+    for (int i = 0; i < 25; i++)
+    {
+        contactList.append(lines[i]->text());
+    }
+
+    // hinzufuegen des Textes aus den Zusatzsinformationen Tab (FeatureInfoTextEdit)
+    contactList.append(ui->FeatureInfoTextEdit->toPlainText());
+    // zuweisen eines Key und Uebergabe der QStringList an die QMap
+    contactValue->insert(contactValue->count() ,contactList);
+
+    // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
+    createMessagBox();
+
+    /*
+    ** Übergabe an die addinExport-Klasse zum speichern in einer CSV
+    ** mit "|" Delimiter
+    */
+    exportTo = new AddinExport(contactList, 2);
+}
+
+// funktion zum ueberpruefen ob der Benutzer schon angelegt wurde
+bool MainWindow::contactExist(int count)
+{
+    bool contactExistInMap = false;
+    if (count != 0)
+    {
+        // vergleich der QMap werte mit denn eingegebenen
+        // Werten aus dem Kontaktfenster
+        for (int i = 0; i < count; i++)
+        {
+            // hollen der werte aus der QMap mit den Key = i
+            QStringList existingValues = contactValue->value(i);
+
+            if ((existingValues.at(1) == lines[1]->text()) && (existingValues.at(2) == lines[2]->text()))
+            {
+                contactExistInMap = true;
+                break;
+            }
+            else
+            {
+                contactExistInMap = false;
+            }
+        }
+
+    }
+
+    return contactExistInMap;
 }
 
 // right Mouse event //////////////////////////////////
@@ -142,6 +185,26 @@ void MainWindow::createMessagBox()
     messageBox->addButton(goToListView, QMessageBox::ActionRole);
     messageBox->setText("Die Eingetragenen Daten wurden erfolgreich hinterlegt. Was möchten Sie als nächstes tun:");
     messageBox->setWindowTitle("Wie weiter");
+    messageBox->show();
+}
+
+void MainWindow::createMessagBoxcontactExist()
+{
+    // MessageboxButtons erstellen
+    QPushButton *addContact = new QPushButton;
+    addContact->setText("Ja");
+    addContact->setMinimumWidth(40);
+    connect(addContact, SIGNAL(clicked()), this, SLOT(insertInQMap()));
+
+    QPushButton *rejectContact = new QPushButton;
+    rejectContact->setText("Nein");
+    rejectContact->setMinimumWidth(40);
+
+    QMessageBox *messageBox = new QMessageBox;
+    messageBox->addButton(addContact, QMessageBox::ActionRole);
+    messageBox->addButton(rejectContact, QMessageBox::ActionRole);
+    messageBox->setText("Es existiert bereits ein Nutzer mit diesen Namen in der Kontaktliste, soll er trotzdem Hinzugefügt werden?");
+    messageBox->setWindowTitle("Nutzer vorhanden");
     messageBox->show();
 }
 
@@ -229,6 +292,8 @@ void MainWindow::createActions()
     newContactAct = new QAction(tr("&Neuer Kontakt"), this);
     newContactAct->setShortcut(Qt::CTRL + Qt::Key_N);
     newContactAct->setStatusTip(tr("Erstellen eines neuen Kontkts"));
+    // Bild zuweisen
+    newContactAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/Contract.png"));
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
@@ -243,19 +308,23 @@ void MainWindow::createActions()
 
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
+    // Bild zuweisung
+    exitAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/close.png"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(exit()));
 
     // Actions View Menu
     listAct = new QAction(tr("Liste"), this);
     listAct->setShortcut(Qt::CTRL + Qt::Key_L);
+    listAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/clients.png"));
     connect(listAct, SIGNAL(triggered()), this, SLOT(list()));
 
-    detailAct = new QAction(tr("Detail"), this);
-    singelViewAct = new QAction(tr("Einzelansicht"), this);
-    viewInGroupAct = new QAction(tr("In Gruppen Anzeigen"), this);
+//    detailAct = new QAction(tr("Detail"), this);
+//    singelViewAct = new QAction(tr("Einzelansicht"), this);
+//    viewInGroupAct = new QAction(tr("In Gruppen Anzeigen"), this);
 
     // Actions Help Menu
     infoAct = new QAction(tr("Info"), this);
+    infoAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/info.png"));
 
     // Mouse events
     pasteAct = new QAction(tr("Einfügen"), this);
@@ -279,10 +348,12 @@ void MainWindow::createMenus()
     //fileMenu->addAction(contactExport);
     // add subMenu
     contactImport = fileMenu->addMenu(tr("Kontakt importieren"));
+    contactImport->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/import.png"));
     contactImport->addAction(importXMLAct);
     contactImport->addAction(importCSVAct);
 
     contactExport = fileMenu->addMenu(tr("Kontakt exportieren"));
+    contactExport->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/export.png"));
     contactExport->addAction(exportXMLAct);
     contactExport->addAction(exportCSVAct);
 
@@ -291,10 +362,10 @@ void MainWindow::createMenus()
 
     viewMenu = menuBar()->addMenu(tr("&Ansicht"));
     viewMenu->addAction(listAct);
-    viewMenu->addAction(detailAct);
-    viewMenu->addAction(singelViewAct);
-    viewMenu->addSeparator();
-    viewMenu->addAction(viewInGroupAct);
+    //viewMenu->addAction(detailAct);
+    //viewMenu->addAction(singelViewAct);
+    //viewMenu->addSeparator();
+    //viewMenu->addAction(viewInGroupAct);
 
     helpMenu = menuBar()->addMenu(tr("&Hilfe"));
     helpMenu->addAction(infoAct);
@@ -478,7 +549,7 @@ void MainWindow::list()
     }
 
     // Aufrufen der Listenansicht
-    if (!widget->isVisible())
+    if (!listViewOpen->isVisible())
     {
         // zuweisen des neuen QWidget dem layout vom centralWidget
         //ui->centralWidget->layout()->addWidget(listViewOpen->showQWidget((QMap*) contactValue));
@@ -486,32 +557,4 @@ void MainWindow::list()
         this->addToolBar(listViewOpen->showQToolBar());
         listViewOpen->showMeQToolBar();
     }
-}
-
-// loeschen des Wetes aus der QMap
-void MainWindow::deleteQMapValue()
-{
-    //int key2 = contactValue->key();
-//    QMap<int, QStringList>::iterator i = contactValue->begin();
-
-//    while (i != contactValue->end())
-//    {
-//        QMap<int, QStringList>::iterator prev = i;
-//        if (prev.key() == key)
-//        {
-//            contactValue->erase(i);
-//        }
-//        else
-//        {
-//            i++;
-//        }
-//    }
-    //contactValue->remove(getDeleteValue());
-}
-
-void MainWindow::setDeleteValue(int key)
-{
-    int keyDelete = key;
-    //contactValue->count();
-    qDebug() << "so hier bin ich doch wie lösche ich jetzt.";
 }

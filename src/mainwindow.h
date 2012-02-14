@@ -28,9 +28,6 @@ public:
     ~MainWindow();
     //QLineEdit *returnLines(); // Objekt vom type returnLines
     QStringList returnLines ();
-    QMap<int, QStringList> *contactValue;
-    static void setDeleteValue(int key);
-    //static int getDeleteValue();
 
 private slots:
     // FileMenu
@@ -66,6 +63,7 @@ private slots:
     void saveContactData();
 
     void showContextMenu();
+    void insertInQMap();
 
 private:
     Ui::MainWindow *ui;
@@ -77,8 +75,10 @@ private:
     void fillQMap();
     // erstellen der MessagBox wenn Bentzer auf Speichern geklickt hat
     void createMessagBox();
+    void createMessagBoxcontactExist();
 
     void deleteQMapValue();
+    bool contactExist(int count);
 
     // Menus
     QMenu *fileMenu;
@@ -99,9 +99,9 @@ private:
     QAction *exitAct;
     // View Menu Actions
     QAction *listAct;
-    QAction *detailAct;
-    QAction *singelViewAct;
-    QAction *viewInGroupAct;
+    //QAction *detailAct;
+    //QAction *singelViewAct;
+    //QAction *viewInGroupAct;
     // Help Menu Actions
     QAction *infoAct;
 
@@ -121,10 +121,11 @@ private:
     AddinImport *importFrom;
     listView *listViewOpen;
 
-    QWidget *widget;
-    QWidget *cloneWidget;
+    //QWidget *widget;
+    //QWidget *cloneWidget;
 
-    //ContactMap *conMap;
+    QMap<int, QStringList> *contactValue;
+
 };
 
 
