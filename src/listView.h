@@ -21,6 +21,7 @@ public:
     listView(QWidget *parent = 0);
     QWidget* showQWidget(QMap <int, QStringList>* list);
     QToolBar* showQToolBar();
+    QMap<int, QStringList>* updateQMap();
     void closeQWidget();
     bool isVisibleQWidget();
     void closeQToolBar();

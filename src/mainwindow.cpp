@@ -293,7 +293,7 @@ void MainWindow::createActions()
     newContactAct->setShortcut(Qt::CTRL + Qt::Key_N);
     newContactAct->setStatusTip(tr("Erstellen eines neuen Kontkts"));
     // Bild zuweisen
-    newContactAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/Contract.png"));
+    newContactAct->setIcon(QIcon(":/new/image/Contract.png"));
     connect(newContactAct, SIGNAL(triggered()), this, SLOT(newContact()));
 
     importXMLAct = new QAction(tr("... von XML"), this);
@@ -309,13 +309,13 @@ void MainWindow::createActions()
     exitAct = new QAction(tr("&Beenden"), this);
     exitAct->setShortcut(QKeySequence::Close);
     // Bild zuweisung
-    exitAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/close.png"));
+    exitAct->setIcon(QIcon(":/new/image/close.png"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(exit()));
 
     // Actions View Menu
     listAct = new QAction(tr("Liste"), this);
     listAct->setShortcut(Qt::CTRL + Qt::Key_L);
-    listAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/clients.png"));
+    listAct->setIcon(QIcon(":/new/image/clients.png"));
     connect(listAct, SIGNAL(triggered()), this, SLOT(list()));
 
 //    detailAct = new QAction(tr("Detail"), this);
@@ -324,7 +324,7 @@ void MainWindow::createActions()
 
     // Actions Help Menu
     infoAct = new QAction(tr("Info"), this);
-    infoAct->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/info.png"));
+    infoAct->setIcon(QIcon(":/new/image/info.png"));
 
     // Mouse events
     pasteAct = new QAction(tr("Einfügen"), this);
@@ -348,12 +348,12 @@ void MainWindow::createMenus()
     //fileMenu->addAction(contactExport);
     // add subMenu
     contactImport = fileMenu->addMenu(tr("Kontakt importieren"));
-    contactImport->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/import.png"));
+    contactImport->setIcon(QIcon(":/new/image/import.png"));
     contactImport->addAction(importXMLAct);
     contactImport->addAction(importCSVAct);
 
     contactExport = fileMenu->addMenu(tr("Kontakt exportieren"));
-    contactExport->setIcon(QIcon("../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/export.png"));
+    contactExport->setIcon(QIcon(":/new/image/export.png"));
     contactExport->addAction(exportXMLAct);
     contactExport->addAction(exportCSVAct);
 
@@ -408,13 +408,14 @@ void MainWindow::newContact()
 {
     if (listViewOpen->isVisibleQWidget())
     {
+        contactValue = listViewOpen->updateQMap();
         listViewOpen->closeQWidget();
         listViewOpen->closeQToolBar();
     }
 
     //centralWidget();
-    qDebug() << centralWidget();
-    qDebug() << layout();
+    //qDebug() << centralWidget();
+    //qDebug() << layout();
 
     //setCentralWidget(ui->widgetNeuKontakt);
 
@@ -451,7 +452,6 @@ void MainWindow::exportXML()
         // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
         printMessages (1);
     }
-
 }
 /*
 ** Die Errorklasse kann eine Fehlerausgabe produzieren, wenn der Benutzer

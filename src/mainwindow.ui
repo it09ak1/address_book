@@ -23,8 +23,8 @@
    <string>Adress Buch</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/addressbook.png</normaloff>../Addressbook-build-desktop-Qt_4_7_4_for_Desktop_-_MSVC2008__Qt_SDK__Debug/debug/image/addressbook.png</iconset>
+   <iconset resource="ressurces.qrc">
+    <normaloff>:/new/image/addressbook.png</normaloff>:/new/image/addressbook.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -1131,6 +1131,8 @@
   <tabstop>tabWidgetNeuerKontakr</tabstop>
   <tabstop>FeatureInfoTextEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="ressurces.qrc"/>
+ </resources>
  <connections/>
 </ui>
