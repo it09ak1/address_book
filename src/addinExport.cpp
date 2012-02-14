@@ -26,10 +26,8 @@ AddinExport::AddinExport(QStringList sList, int action) {
     case 1: this->exportToXML();
     case 2: this->exportToCSV();
     }
-
-
-
 }
+
 void AddinExport::exportToXML() {
 
     /* xdoc ist erzeugt ein Dom Dokument mit Namen "Contact"

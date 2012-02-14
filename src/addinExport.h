@@ -27,7 +27,7 @@ public:
     ** wollen auf UI Elemente des Elternteiles zugreifen
     */
     AddinExport(QStringList sList, int action);
-    //~AddinExport(); // destruktor
+    //~AddinExport();
 
     QStringList exportList;
 

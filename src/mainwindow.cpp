@@ -4,7 +4,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "infowindow.h"
-//#include "contactmap.h"
 #include <QPushButton>
 #include <QtGui>
 #include <QDebug>
@@ -42,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     importFrom->importFiles ();
 
     listViewOpen = new listView;
+
 }
 
 MainWindow::~MainWindow()
@@ -85,6 +85,11 @@ void MainWindow::saveContactData()
         if (!contactExist(countExistingContacs))
         {
             insertInQMap();
+            /*
+            ** Übergabe an die addinExport-Klasse zum speichern in einer CSV
+            ** mit "|" Delimiter
+            */
+            exportTo = new AddinExport(returnLines(), 2);
         }
         else
         {
@@ -427,8 +432,13 @@ void MainWindow::importXML() {
 
 }
 void MainWindow::exportCSV() {
-
-    //TODO
+    if ((lines[1]->text() != "") && (lines[2]->text() != ""))
+    {
+        exportTo = new AddinExport(returnLines(), 2);
+    }else {
+        // Benutzer auf den Fehler des Fehlenden Vor und Nachnamen hinweisen
+        printMessages (1);
+    }
 
 }
 void MainWindow::importCSV() {
@@ -436,12 +446,18 @@ void MainWindow::importCSV() {
     for(int i=0; i<24; i++) {
         lines[i]->setText(importList.at(i));
     }
-    this->newContact();
-    contactValue->insert(contactValue->count(),importList);
-    if (listViewOpen->isVisibleQWidget())
-    {
-        listViewOpen->createTableRowValues(this->contactValue);
+
+    if (!importList.isEmpty()) {
+        contactValue->insert(contactValue->count(),importList);
+        if ( ui->widgetNeuKontakt->isVisible()){
+            this->newContact();
+        }
+        else if (listViewOpen->isVisibleQWidget())
+        {
+            listViewOpen->createTableRowValues(this->contactValue);
+        }
     }
+
 }
 void MainWindow::exportXML()
 {
