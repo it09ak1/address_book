@@ -3,6 +3,7 @@
 #include "listView.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "infowindow.h"
 //#include "contactmap.h"
 #include <QPushButton>
 #include <QtGui>
@@ -53,7 +54,6 @@ void MainWindow::fillQMap()
     // fuer aller weiteren zur verfuegung stehen (z.B. anhaengen
     // von neuen Kontakten)
     contactValue = new QMap <int, QStringList>;
-
 }
 
 void MainWindow::saveContactData()
@@ -143,9 +143,7 @@ bool MainWindow::contactExist(int count)
                 contactExistInMap = false;
             }
         }
-
     }
-
     return contactExistInMap;
 }
 
@@ -208,10 +206,6 @@ void MainWindow::createMessagBoxcontactExist()
     messageBox->show();
 }
 
-//QLineEdit *MainWindow::returnLines()
-//{
-//    return *this->lines;
-//}
 QStringList MainWindow::returnLines ()
 {
     QStringList fList;
@@ -325,6 +319,7 @@ void MainWindow::createActions()
     // Actions Help Menu
     infoAct = new QAction(tr("Info"), this);
     infoAct->setIcon(QIcon(":/new/image/info.png"));
+    connect(infoAct, SIGNAL(triggered()), this, SLOT(info()));
 
     // Mouse events
     pasteAct = new QAction(tr("Einfügen"), this);
@@ -437,6 +432,11 @@ void MainWindow::importCSV() {
     importFrom = new AddinImport(this->contactValue);
     qDebug() << "importiere";
     importFrom->importFiles ();
+
+    if (listViewOpen->isVisibleQWidget())
+    {
+        listViewOpen->createTableRowValues(this->contactValue);
+    }
 }
 void MainWindow::exportXML()
 {
@@ -453,6 +453,12 @@ void MainWindow::exportXML()
         printMessages (1);
     }
 }
+
+void MainWindow::info()
+{
+    new InfoWindow;
+}
+
 /*
 ** Die Errorklasse kann eine Fehlerausgabe produzieren, wenn der Benutzer
 ** auf etwas hingewiesen werden soll.

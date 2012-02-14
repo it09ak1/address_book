@@ -1,5 +1,6 @@
 #include "listView.h"
 #include "mainwindow.h"
+#include "addinExport.h"
 #include <QDebug>
 #include <QStandardItemModel>
 #include <QtGui>
@@ -23,8 +24,8 @@ void listView::showMouseMenu()
     saveTo = rightMouseMenu->addMenu(tr("Exportieren..."));
     saveTo->addAction(exportToXML);
     saveTo->addAction(exportToExcel);
-    rightMouseMenu->addAction(detailView);
-    rightMouseMenu->addAction(edit);
+    //rightMouseMenu->addAction(detailView);
+    //rightMouseMenu->addAction(edit);
     rightMouseMenu->addAction(deleteContact);
     rightMouseMenu->popup(QCursor::pos());
 }
@@ -54,6 +55,22 @@ void listView::deleteContactFormTable()
     tableAddressData->removeRow(row);
 }
 
+// export nach XML
+void listView::exportTo()
+{
+    QStringList exportValues;
+    // ermittlen der ausgewaehlten spalte
+    int column = tableAddressData->currentColumn();
+
+    // uebergeben der Zeilen werte an die QStringList
+    for (int i = 0; i < tableAddressData->columnCount(); i++)
+    {
+        exportValues.append(tableAddressData->item(column, i)->text());
+    }
+
+    new AddinExport(exportValues, 1);
+}
+
 // erstellen der Rechtem Maus Actionen
 void listView::createActions()
 {
@@ -70,14 +87,16 @@ void listView::createActions()
 
     // Untermenue Punkte (saveTo)
     exportToXML = new QAction("... nach XML", this);
+    connect(exportToXML, SIGNAL(triggered()), this, SLOT(exportTo()));
+
     exportToExcel = new QAction("... nach Excel", this);
 
-    detailView = new QAction("Detailansicht", this);
-    detailView->setStatusTip("Anschauen der Kontaktdaten in einer anderen Sicht.");
+    //detailView = new QAction("Detailansicht", this);
+    //detailView->setStatusTip("Anschauen der Kontaktdaten in einer anderen Sicht.");
 
-    edit = new QAction("Bearbeiten", this);
-    edit->setShortcut(Qt::CTRL + Qt::Key_E);
-    edit->setStatusTip("Koriegieren falsch eingegebender Werte.");
+    //edit = new QAction("Bearbeiten", this);
+    //edit->setShortcut(Qt::CTRL + Qt::Key_E);
+    //edit->setStatusTip("Koriegieren falsch eingegebender Werte.");
 
     deleteContact = new QAction("Löschen", this);
     deleteContact->setShortcut(Qt::CTRL + Qt::Key_D);
@@ -114,10 +133,11 @@ void listView::createTable()
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setObjectName("widgetListView");
 
+    // auswaehlen der ganzen Zeile (problem was entsteht ist das die aktuelle
+    // ausgeaehlte Spalte immer auf 0 gesetzt wird)
+    // connect(tableAddressData, SIGNAL(cellClicked(int,int)), tableAddressData, SLOT(selectRow(int)));
     // zum Anzeigen des Mause Menues in der Spalte
     connect(tableAddressData, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showMouseMenu()));
-    // auswaehlen der ganzen Zeile
-    connect(tableAddressData, SIGNAL(cellClicked(int,int)), tableAddressData, SLOT(selectRow(int)));
 }
 
 void listView::createTableHeader()

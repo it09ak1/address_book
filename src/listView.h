@@ -12,6 +12,7 @@
 class QMenu;
 class QAction;
 class MainWindow;
+//class AddinExport;
 
 class listView : public QWidget
 {
@@ -26,6 +27,7 @@ public:
     bool isVisibleQWidget();
     void closeQToolBar();
     void showMeQToolBar();
+    void createTableRowValues(QMap <int, QStringList>* listForwarding);
 
 protected:
     //void mousePressEvent(QMouseEvent *);
@@ -39,14 +41,16 @@ private slots:
     void deleteContactFormTable();
     void searchStart();
     void setRowsVisible();
+    void exportTo();
     //void on_listView_selectColumn(int column);
 
 private:
     void createTable();
     void createTableHeader();
-    void createTableRowValues(QMap <int, QStringList>* listForwarding);
+    //void createTableRowValues(QMap <int, QStringList>* listForwarding);
     void createActions();
     void createToolBar();
+    void readLine();
     bool rightMousPress;
 
     //QTableView *tableView;
@@ -84,6 +88,7 @@ private:
     QComboBox *comboBoxValue;
     QToolButton *searchSart;
     QToolButton *showAll;
+    //AddinExport *exportTo;
 
 };
 

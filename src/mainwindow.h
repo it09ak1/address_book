@@ -47,7 +47,7 @@ private slots:
     //void detail();
     //void singelView();
     //void viewInGroup();
-    //void info();
+    void info();
 
     //void help();
 
@@ -121,12 +121,6 @@ private:
     AddinExport *exportTo;
     AddinImport *importFrom;
     listView *listViewOpen;
-
-    //QWidget *widget;
-    //QWidget *cloneWidget;
-
-    //aus Testzwecken mal public gesetzt (Import greift darauf zu)
-    //QMap<int, QStringList> *contactValue;
 
 };
 
