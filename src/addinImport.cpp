@@ -23,10 +23,35 @@ QStringList AddinImport::returnImport () {
     return ret;
 }
 
+QStringList AddinImport::importFromXML(){
+    QStringList sList;
+    QDomDocument xdoc("Contact");
+    QFile *file;
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"), QDir::currentPath(),tr("XML File (*.xml)"));
+    if (!fileName.isEmpty()) {
+        file = new QFile(fileName);
+        if (file->open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            if (!xdoc.setContent(file))
+            {
+                QDomElement root = xdoc.documentElement();
+
+                //qDebug() << root.firstChild();
+                QDomNode cNode=root.firstChild();
+                if (cNode.isElement()) {
+                    QDomElement e = cNode.toElement();
+                    qDebug() << "e:" << e.text();
+                }
+            }
+        }
+    }
+    return sList;
+}
+
 QStringList AddinImport::importAsLines(QStringList sList){
     qDebug() << "Beginne Import von einzelner Datei";
     QFile *file;
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"), QDir::currentPath(),tr("XML File (*.csv)"));
     QString line;
 
     if (!fileName.isEmpty()) {

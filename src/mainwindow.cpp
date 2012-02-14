@@ -428,7 +428,8 @@ void MainWindow::newContact()
 
 void MainWindow::importXML() {
 
-    //TODO
+    QStringList importList = importFrom->importFromXML();
+    qDebug() << importList;
 
 }
 void MainWindow::exportCSV() {

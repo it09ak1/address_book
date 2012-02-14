@@ -19,6 +19,7 @@ public:
     AddinImport(QMap<int, QStringList> *cV, QLineEdit *&qLEdit);
     QStringList returnImport();
     QStringList importAsLines(QStringList sList);
+    QStringList importFromXML();
     void importFiles();
 
 private:
