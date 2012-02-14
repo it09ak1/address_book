@@ -193,7 +193,7 @@ void AddinExport::writeFile(QString outData, int fileType)
     qDebug() << fileName;
 
 
-    if (fileName != "") {
+    if (!fileName.isEmpty()) {
         QFile file(fileName);
 
         /* Datei brauch nur schreibend geöffnet werden, alle Informationen

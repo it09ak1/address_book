@@ -37,6 +37,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     rightMouseMenuNewContact();
     fillQMap();
 
+    importFrom = new AddinImport(this->contactValue, this->lines[25]);
+    qDebug() << "importiere";
+    importFrom->importFiles ();
+
     listViewOpen = new listView;
 }
 
@@ -428,10 +432,11 @@ void MainWindow::exportCSV() {
 
 }
 void MainWindow::importCSV() {
+    QStringList importList = importFrom->importAsLines(returnLines());
+    for(int i=0; i<24; i++) {
+        lines[i]->setText(importList.at(i));
+    }
 
-    importFrom = new AddinImport(this->contactValue);
-    qDebug() << "importiere";
-    importFrom->importFiles ();
 
     if (listViewOpen->isVisibleQWidget())
     {

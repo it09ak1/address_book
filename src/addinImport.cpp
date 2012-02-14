@@ -1,10 +1,19 @@
 #include "addinImport.h"
 #include "AddinExport.h"
 #include "mainwindow.h"
+#include <QtGui>
+#include <QFile>
 
-AddinImport::AddinImport(QMap<int, QStringList> *cV)
+
+AddinImport::AddinImport(){
+
+}
+
+AddinImport::AddinImport(QMap<int, QStringList> *cV, QLineEdit *&qLEdit)
 {
-   this->importContactValue  = cV;
+    this->importContactValue  = cV;
+    this->lines = qLEdit;
+
 }
 
 QStringList AddinImport::returnImport () {
@@ -13,6 +22,23 @@ QStringList AddinImport::returnImport () {
 
     return ret;
 }
+
+QStringList AddinImport::importAsLines(QStringList sList){
+    qDebug() << "Beginne Import von einzelner Datei";
+    QFile *file;
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"), QDir::currentPath());
+    QString line;
+
+    if (!fileName.isEmpty()) {
+        file = new QFile(fileName);
+        QTextStream streamIn(file);
+        line = streamIn.readLine ();
+        sList = line.split ('|');
+    }
+    return sList;
+}
+
+
 
 /* Die Methode importFiles() liest im aktuellen Pfad, in dem die Anwendung
 ** gestartet wird, alle Dateien ein, deren Endung in der sList gepflegt wurden.
