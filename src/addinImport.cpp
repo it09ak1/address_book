@@ -2,9 +2,9 @@
 #include "AddinExport.h"
 #include "mainwindow.h"
 
-AddinImport::AddinImport()
+AddinImport::AddinImport(QMap<int, QStringList> *cV)
 {
-
+   this->importContactValue  = cV;
 }
 
 QStringList AddinImport::returnImport () {
@@ -14,39 +14,61 @@ QStringList AddinImport::returnImport () {
     return ret;
 }
 
-//QFile AddinImport::importFiles () {
+/* Die Methode importFiles() liest im aktuellen Pfad, in dem die Anwendung
+** gestartet wird, alle Dateien ein, deren Endung in der sList gepflegt wurden.
+** Jede Datei wird zuerst geöffnet, anschließend die erste Zeile gelesen (DATA),
+** dann werden die eingelesenen Informationen durch ein Aufruf von:
+**      line.split ('|'); an den "Pipe" Delimitern aufgetrennt und separat in
+** eine QStringList gespeichert.
+** Die Inhalte der QStringList werden anschließend Item für Item an die QMap,
+** dass als Referenz übergeben wurde, angehängt.
+*/
 void AddinImport::importFiles () {
+    //Filteroperationen
+    //**Beinhaltet alle notwendigen Dateiendungen, hier "*.csv"
     QStringList sList;
-    QStringList contactItemList;
-    QStringList item;
-    QDir myDir(QDir::currentPath());
-    QString line;
-
-
     sList.append ("*.csv");
-    QStringList fileList = myDir.entryList (sList);
-    QFile file("Peter_Pan_1132.csv");
-    if (fileList.count() > 0) {
 
-        //QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), myDir );
+    //**Enthält die einzellnen Items von Information
+    QStringList contactItemList;
+    //**Wird mit dem Inhalt der Datei gefüllt, nachdem die Inhalte aufgetrennt wurden
+    QStringList item;
+
+
+    // Dateioperationen
+    //** Öffne aktuelles Verzeichnis der Anwendung
+    QDir *myDir = new QDir(QDir::currentPath());
+    QString line;
+    QFile *file;
+    //** Les alle Dateien mit dem Dateifilter aus der sList ein
+    QStringList fileList = myDir->entryList (sList);
+
+    if (fileList.size() > 0) {
         int i = 0;
+
+        //Traversiere über alle gefundenen Dateien
         foreach (QString str, fileList) {
             //qDebug() << myDir.absoluteFilePath (fileList.at (i));
 
-            //QFile file(myDir.absoluteFilePath (fileList.at (i)));
-            //QFile file(fileList.at (i));
-            QTextStream streamIn(&file);
-            line = streamIn.readLine ();
-            qDebug() << line;
-            item = line.split ('|');
-            qDebug() << item;
-            for(i=0;i != line.count (); i++) {
-                contactItemList.append (line.at (i));
+            //file = new QFile(myDir.absoluteFilePath (fileList.at (i)));
+            //Öffne die Datei im Verzeichnis der Anwendung
+            //Geht auch mit absolutem Pfad
+            file = new QFile(fileList.at (i));
+            if (file->open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                QTextStream streamIn(file);
+                line = streamIn.readLine ();
+                item = line.split ('|');
+                contactItemList.clear();
+                for(int j=0;j != item.count(); j++) {
+                    contactItemList.append (item.at(j));
+                }
+                qDebug() << contactItemList;
+                importContactValue->insert (i, contactItemList);
+                i++;
+                file->close();
             }
-            //MainWindow::contactValue->insert (i, contactItemList);
         }
-
-        qDebug() << fileList;
     }
 
 

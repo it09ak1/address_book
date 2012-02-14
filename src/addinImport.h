@@ -15,13 +15,15 @@ class AddinImport : public QMainWindow {
     Q_OBJECT
 
 public:
-    AddinImport();
+    AddinImport(QMap<int, QStringList> *cV);
     QStringList returnImport();
     void importFiles();
+    friend class MainWindow;
 
 private:
     QStringList importList;
-
+    MainWindow *thisWindow;
+    QMap<int, QStringList> *importContactValue;
 };
 
 #endif // ADDINIMPORT_H

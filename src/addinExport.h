@@ -20,8 +20,6 @@ class AddinExport : public QMainWindow {
 
     Q_OBJECT
 
-    //MainWindow *myWindow;
-
 public:
     /*
     ** durch Vorwärtsdeklaration muss Variable belegt werden
@@ -40,6 +38,7 @@ private:
     // Schreibvorgang in dieser Methode ausgelagert. Dateityp = 2. Parameter
     void writeFile(QString outData, int fileType);
     QDomElement ContactToNode( QDomDocument &xdoc );
+    QMap<int, QStringList> *importContactValue;
 };
 
 #endif // ADDINEXPORT_H
