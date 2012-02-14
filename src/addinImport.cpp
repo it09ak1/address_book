@@ -31,9 +31,14 @@ QStringList AddinImport::importAsLines(QStringList sList){
 
     if (!fileName.isEmpty()) {
         file = new QFile(fileName);
-        QTextStream streamIn(file);
-        line = streamIn.readLine ();
-        sList = line.split ('|');
+        if (file->open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream streamIn(file);
+            line = streamIn.readLine ();
+            qDebug() << line;
+            sList = line.split ('|');
+            qDebug() << sList;
+        }
     }
     return sList;
 }

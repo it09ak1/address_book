@@ -436,8 +436,8 @@ void MainWindow::importCSV() {
     for(int i=0; i<24; i++) {
         lines[i]->setText(importList.at(i));
     }
-
-
+    this->newContact();
+    contactValue->insert(contactValue->count(),importList);
     if (listViewOpen->isVisibleQWidget())
     {
         listViewOpen->createTableRowValues(this->contactValue);
