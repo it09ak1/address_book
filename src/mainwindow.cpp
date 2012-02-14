@@ -434,7 +434,7 @@ void MainWindow::exportCSV() {
 }
 void MainWindow::importCSV() {
 
-    importFrom = new AddinImport();
+    importFrom = new AddinImport(this->contactValue);
     qDebug() << "importiere";
     importFrom->importFiles ();
 }

@@ -28,6 +28,7 @@ public:
     ~MainWindow();
     //QLineEdit *returnLines(); // Objekt vom type returnLines
     QStringList returnLines ();
+    QMap<int, QStringList> *contactValue;
 
 private slots:
     // FileMenu
@@ -124,7 +125,8 @@ private:
     //QWidget *widget;
     //QWidget *cloneWidget;
 
-    QMap<int, QStringList> *contactValue;
+    //aus Testzwecken mal public gesetzt (Import greift darauf zu)
+    //QMap<int, QStringList> *contactValue;
 
 };
 
