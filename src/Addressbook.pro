@@ -16,14 +16,24 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     addinExport.cpp \
     listView.cpp \
-    addinImport.cpp
+    addinImport.cpp \
+    infowindow.cpp
 
 HEADERS  += mainwindow.h \
     addinExport.h \
     listView.h \
-    addinImport.h
+    addinImport.h \
+    infowindow.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    ressurces.qrc
+
+
+
+
+
 
 
 

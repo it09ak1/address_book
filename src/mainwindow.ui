@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>Adress Buch</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="ressurces.qrc">
+    <normaloff>:/new/image/addressbook.png</normaloff>:/new/image/addressbook.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
@@ -1127,6 +1131,8 @@
   <tabstop>tabWidgetNeuerKontakr</tabstop>
   <tabstop>FeatureInfoTextEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="ressurces.qrc"/>
+ </resources>
  <connections/>
 </ui>

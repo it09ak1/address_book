@@ -20,24 +20,14 @@ AddinExport::AddinExport(QStringList sList, int action) {
     */
     switch (action)
     {
-        /* Alle Feldelemente werden über das Linesfeld im XML-Format in  eine
-         * Datei geschrieben
-         */
-        case 1: {
-            this->exportToXML();
-            // führe keinen weiteren Case aus
-            break;
-        }
-        case 2: {
-            this->exportToCSV();
-            // führe keinen weiteren Case aus
-            break;
-        }
+    /* Alle Feldelemente werden über das Linesfeld im XML-Format in  eine
+     * Datei geschrieben
+     */
+    case 1: this->exportToXML();
+    case 2: this->exportToCSV();
     }
-
-
-
 }
+
 void AddinExport::exportToXML() {
 
     /* xdoc ist erzeugt ein Dom Dokument mit Namen "Contact"
@@ -58,12 +48,11 @@ void AddinExport::exportToXML() {
     */
     root.appendChild(ContactToNode (xdoc) );
 
+
     // wandelt das Dom Dokument in einen QString um
     QString outData = xdoc.toString();
 
-    // Übergebe outData zum Schreiben in die entsprechende Datei an die
-    // Schreibmethode writeFile
-    this->writeFile(outData, 1);
+    writeFile(outData, 1);
 
 
 }
@@ -74,10 +63,6 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
 
     // personal data /////////////////////////////////
     //////////////////////////////////////////////////
-    /*
-    ** Erzeugt zuerst einen Tag (Elementname) und hängt dann den entsprechenden
-    ** Wert als Textknoten mit dem inhalt aus der exportList an.
-    */
     tag = xdoc.createElement("Title");
     tag.appendChild(xdoc.createTextNode(this->exportList.at(0)));
     cNode.appendChild(tag);
@@ -144,7 +129,6 @@ QDomElement AddinExport::ContactToNode( QDomDocument &xdoc )
     return cNode;
 }
 
-
 void AddinExport::exportToCSV()
 {
     QString output="";
@@ -207,7 +191,7 @@ void AddinExport::writeFile(QString outData, int fileType)
     qDebug() << fileName;
 
 
-    if (fileName != "") {
+    if (!fileName.isEmpty()) {
         QFile file(fileName);
 
         /* Datei brauch nur schreibend geöffnet werden, alle Informationen
@@ -224,3 +208,4 @@ void AddinExport::writeFile(QString outData, int fileType)
     }
 
 }
+

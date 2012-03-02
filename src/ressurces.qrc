@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/new">
+        <file>image/close.png</file>
+        <file>image/addressbook.png</file>
+        <file>image/clients.png</file>
+        <file>image/Contract.png</file>
+        <file>image/downArrow.png</file>
+        <file>image/export.png</file>
+        <file>image/import.png</file>
+        <file>image/info.png</file>
+        <file>image/upArrow.png</file>
+        <file>image/delete.png</file>
+    </qresource>
+</RCC>
